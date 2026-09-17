@@ -7,7 +7,7 @@
 <!-- OPEN GRAPH METADATA UNTUK THUMBNAIL WHATSAPP / SOCIAL MEDIA -->
 <meta property="og:title" content="Undangan Pernikahan Digital">
 <meta property="og:description" content="Kami mengundang Anda untuk hadir di acara pernikahan kami.">
-<meta property="og:image" content="thumbnail.jpg">
+<meta property="og:image" content="foto1.jpg">
 <meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -86,15 +86,17 @@
     --music-icon-color: #ffffff;
     --music-bg-color: #be8dac;
 
-    /* --- CUSTOM UKURAN TEKS REKENING / BANK CARD --- */
+    /* --- CUSTOM UKURAN TEKS & KARTU REKENING / WEDDING GIFT --- */
     --bank-card-font-size: 1rem;
+    --bank-card-width: 85%;      /* Lebar kotak rekening */
+    --bank-card-padding: 14px;   /* Ketebalan / padding dalam kartu */
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-text-size-adjust: 100%; /* Mencegah browser HP mengubah ukuran teks sendiri */
+    -webkit-text-size-adjust: 100%;
 }
 
 body, html {
@@ -141,7 +143,7 @@ body, html {
     width: 50%;
     height: 100%;
     background-color: var(--bg-color);
-    background-size: calc(var(--stage-width, 100vw) * 2) 100%; /* Memastikan background cover tidak terdistorsi */
+    background-size: calc(var(--stage-width, 100vw) * 2) 100%;
     background-repeat: no-repeat;
     transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
     z-index: 101;
@@ -269,7 +271,7 @@ body, html {
     bottom: 5%;
     width: 100%;
     text-align: center;
-    font-size: 11px; /* Menggunakan px tetap agar tidak mengecil ekstrem */
+    font-size: 11px;
     color: #333333;
     font-weight: 700;
     letter-spacing: 1.5px;
@@ -530,8 +532,12 @@ body, html {
     align-items: center;
 }
 
+/* Memperbaiki khusus layout RSVP agar kembali normal, tidak menciut dan ke atas */
 #modal-rsvp .modal-body-custom-bg {
-    overflow: hidden !important;
+    overflow-y: auto !important;
+    justify-content: flex-start;
+    padding-top: 50px;
+    gap: 15px;
 }
 
 .btn-close-modal {
@@ -597,16 +603,21 @@ body, html {
 .gallery-card {
     position: relative;
     width: 85%;
+    max-height: 220px; /* Memperpendek tinggi thumbnail agar tidak melebihi latar belakang */
     margin: 0 auto;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .gallery-card img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover; /* Menyesuaikan gambar agar pas dalam kotak thumbnail yang lebih pendek */
     display: block;
     cursor: pointer;
     transition: transform 0.3s ease;
@@ -623,6 +634,7 @@ body, html {
     margin-top: auto;
     margin-bottom: auto;
     width: 100%;
+    align-items: center; /* Memastikan kartu rekening tetap berada di tengah */
     font-size: var(--bank-card-font-size);
     text-align: center;
 }
@@ -630,7 +642,8 @@ body, html {
 .bank-card {
     background: #be8dac;
     border-radius: 12px;
-    padding: 16px;
+    padding: var(--bank-card-padding);
+    width: var(--bank-card-width); /* Mengatur lebar kartu rekening secara konsisten */
     color: #fff;
     backdrop-filter: blur(2px);
     display: flex;
@@ -751,26 +764,15 @@ textarea.form-control {
 .comments-section {
     width: 85%;
     max-width: 420px;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 20px;
     text-align: left;
     z-index: 10;
     position: relative !important;
     opacity: 1 !important;
     transform: none !important;
-    overflow-y: auto;
-    flex: 1;
-    padding-right: 4px;
-    -webkit-overflow-scrolling: touch;
-}
-
-.comments-section::-webkit-scrollbar {
-    width: 4px;
-}
-
-.comments-section::-webkit-scrollbar-thumb {
-    background: rgba(242, 110, 164, 0.4);
-    border-radius: 4px;
+    overflow-y: visible;
+    flex-shrink: 0;
 }
 
 .comments-count {
@@ -1017,7 +1019,7 @@ textarea.form-control {
 
     <!-- Modal 4: RSVP -->
     <div class="modal-overlay" id="modal-rsvp">
-        <div class="modal-body-custom-bg" style="background-image: url('isirsvp.png'); padding-top: 80px;">
+        <div class="modal-body-custom-bg" style="background-image: url('isirsvp.png');">
             <span class="btn-close-modal" onclick="closeModal('modal-rsvp')">&times;</span>
             <div class="rsvp-form-container">
                 <div class="form-group">
