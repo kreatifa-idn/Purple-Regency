@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Undangan Pernikahan Digital</title>
     
     <!-- OPEN GRAPH METADATA UNTUK THUMBNAIL WHATSAPP / SOCIAL MEDIA -->
@@ -43,14 +43,14 @@
             --elem6-top: 14%; --elem6-left: 56%; --elem6-width: 36%;
 
             /* --- CONFIG GALERI CUSTOM --- */
-            --gallery-top-spacing: 28.5%;
+            --gallery-top-spacing: 28.5%; /* Jarak ruang kosong atas untuk tulisan */
 
             /* --- CONFIG ELEMEN DI DALAM MODAL WAKTU & TEMPAT --- */
             --countdown-top: 35%;
             --countdown-left: 50%;
             --countdown-width: 80%;
             --countdown-size: 4cqw;
-            --countdown-box-padding: 6px 4px;
+            --countdown-box-padding: 8px 8px; /* Pengaturan besar/kecil baloon countdown */
 
             /* Pengaturan Posisi & Ukuran Tombol Google Calendar */
             --cal-btn-top: 46%;
@@ -71,21 +71,15 @@
             --music-icon-color: #ffffff;
             --music-bg-color: #be8dac;
 
-            /* CUSTOM UKURAN TEKS REKENING */
-            --bank-card-font-size: 3.5cqw;
+            /* --- CUSTOM UKURAN TEKS REKENING / BANK CARD --- */
+            --bank-card-font-size: 1rem; /* Ubah ukuran ini sesuai kebutuhan Anda */
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html, body {
+        body, html {
             width: 100%;
             height: 100%;
-            height: 100dvh;
             background-color: #111111;
             font-family: 'Montserrat', sans-serif;
             overflow: hidden;
@@ -94,19 +88,18 @@
             align-items: center;
         }
 
-        /* CONTAINER UTAMA DIKUNCI PRESISI 9:16 DI HP & LAPTOP */
+        /* CONTAINER UTAMA KONSISTEN 9:16 DI HP & LAPTOP */
         .stage-container {
             position: relative;
             width: 100vw;
             height: 100vh;
-            height: 100dvh;
-            max-height: 100dvh;
-            max-width: calc(100dvh * (9 / 16));
+            max-width: calc(100vh * (9 / 16));
+            max-height: 100vh;
             aspect-ratio: 9 / 16;
             background-color: var(--bg-color);
             overflow: hidden;
             box-shadow: 0 0 40px rgba(0,0,0,0.8);
-            container-type: inline-size; /* Mengunci Font & Elemen terhadap Lebar Stage */
+            container-type: inline-size;
         }
 
         /* --- COVER GATE ANIMATION --- */
@@ -176,7 +169,7 @@
         }
 
         .guest-title {
-            font-size: 3cqw;
+            font-size: 2.2cqw;
             color: #f7e4c0;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -184,8 +177,8 @@
         }
 
         .guest-name {
-            font-family: 'Cinzel', serif;
-            font-size: 5cqw;
+            font-family: 'Badhorse', serif;
+            font-size: 4cqw;
             color: #f7e4c0;
             font-weight: 700;
             margin-top: 5px;
@@ -221,19 +214,19 @@
             background-image: url('bgisi.png');
             background-repeat: no-repeat;
             background-position: center center;
-            background-size: 100% 100%;
+            background-size: cover;
             z-index: 10;
         }
 
         .instruction-hint {
             position: absolute;
-            bottom: 4%;
+            bottom: 5%;
             width: 100%;
             text-align: center;
-            font-size: 2.8cqw;
+            font-size: 2.2cqw;
             color: #333333;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             z-index: 20;
             animation: blinkAnim 1.2s infinite ease-in-out;
         }
@@ -282,12 +275,10 @@
         /* --- MUSIC CONTROLLER --- */
         .music-controller {
             position: absolute;
-            bottom: 10%;
-            right: 5%;
-            width: 11cqw;
-            height: 11cqw;
-            max-width: 48px;
-            max-height: 48px;
+            bottom: 80px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background-color: var(--music-bg-color);
             border: 2px solid #ffffff;
@@ -304,8 +295,8 @@
         .music-controller:active { transform: scale(0.9); }
 
         .music-icon-svg {
-            width: 55%;
-            height: 55%;
+            width: 24px;
+            height: 24px;
             fill: var(--music-icon-color);
             position: relative;
             overflow: visible;
@@ -329,7 +320,7 @@
             align-items: center;
             opacity: 0;
             transition: opacity 0.4s ease;
-            padding: 10px 0;
+            padding: 20px 0;
         }
 
         .modal-overlay.active {
@@ -340,7 +331,7 @@
         .modal-body-scrollable {
             position: relative;
             width: 90%;
-            max-height: 88%;
+            max-height: 88vh;
             background: var(--bg-color);
             border-radius: 16px;
             padding: 0;
@@ -351,7 +342,9 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .modal-body-scrollable::-webkit-scrollbar { width: 4px; }
+        .modal-body-scrollable::-webkit-scrollbar {
+            width: 4px;
+        }
         .modal-body-scrollable::-webkit-scrollbar-thumb {
             background: rgba(0,0,0,0.2);
             border-radius: 4px;
@@ -362,7 +355,7 @@
         .modal-body-png {
             position: relative;
             width: 90%;
-            max-height: 88%;
+            max-height: 88vh;
             overflow-y: auto;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -379,7 +372,7 @@
         .modal-waktu-container {
             position: relative;
             width: 90%;
-            max-height: 88%;
+            max-height: 88vh;
             overflow-y: auto;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -398,14 +391,13 @@
             z-index: 10;
         }
 
-        /* Countdown Box */
         #countdown-box {
             top: var(--countdown-top);
             left: var(--countdown-left);
             width: var(--countdown-width);
             display: flex;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
             font-size: var(--countdown-size);
             font-weight: 700;
             color: var(--primary-color);
@@ -422,7 +414,7 @@
 
         .time-unit span {
             display: block;
-            font-size: 1.8cqw;
+            font-size: 1.6cqw;
             font-weight: 500;
             color: #555;
             text-transform: uppercase;
@@ -454,13 +446,13 @@
         .modal-body-custom-bg {
             position: relative;
             width: 90%;
-            aspect-ratio: 9 / 18;
-            max-height: 85%;
+            aspect-ratio: 9 / 20;
+            max-height: 80vh;
             background-size: 100% 100%;
             background-position: center;
             background-repeat: no-repeat;
             border-radius: 16px;
-            padding: 20px 14px;
+            padding: 24px 18px;
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             -webkit-overflow-scrolling: touch;
@@ -475,16 +467,14 @@
 
         .btn-close-modal {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 5cqw;
+            top: 12px;
+            right: 12px;
+            font-size: 1.4rem;
             font-weight: bold;
             color: #333;
             background: rgba(255, 255, 255, 0.9);
-            width: 8cqw;
-            height: 8cqw;
-            max-width: 36px;
-            max-height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -493,17 +483,19 @@
             line-height: 1;
             z-index: 300;
             box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, background-color 0.2s ease;
         }
 
-        .btn-close-modal:active { transform: scale(0.9); }
+        .btn-close-modal:active {
+            transform: scale(0.9);
+        }
 
         .modal-title {
             font-family: 'Cinzel', serif;
-            font-size: 4.5cqw;
+            font-size: 1.3rem;
             color: var(--primary-color);
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             font-weight: 700;
         }
 
@@ -511,7 +503,8 @@
             position: relative;
             width: 90%;
             height: auto;
-            max-height: 88%;
+            max-height: calc(100vh - 40px);
+            max-height: calc(100dvh - 40px);
             overflow-y: auto;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -544,21 +537,21 @@
         .gallery-card img { width: 100%; height: auto; display: block; cursor: pointer; transition: transform 0.3s ease; }
         .gallery-card img:hover { transform: scale(1.02); }
 
+        /* WEDDING GIFT */
         .gift-container { 
             display: flex; 
             flex-direction: column; 
-            gap: 12px; 
+            gap: 15px; 
             margin-top: auto;
             margin-bottom: auto; 
             width: 100%; 
             font-size: var(--bank-card-font-size);
             text-align: center;
         }
-
         .bank-card { 
             background: #be8dac; 
             border-radius: 12px; 
-            padding: 12px; 
+            padding: 16px; 
             color: #fff; 
             backdrop-filter: blur(2px); 
             display: flex;
@@ -566,144 +559,161 @@
             align-items: center;
             justify-content: center;
         }
-
         .bank-name { 
-            font-size: 3cqw; 
+            font-size: 0.85em; 
             font-weight: 700; 
             text-transform: uppercase; 
-            margin-bottom: 6px; 
+            margin-bottom: 8px; 
             text-align: center;
         }
-
         .account-box { 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            gap: 8px;
+            gap: 10px;
             background: var(--secondary-color); 
-            padding: 8px 10px; 
+            padding: 10px 12px; 
             border-radius: 6px; 
             font-weight: 600; 
             cursor: pointer; 
-            font-size: 3.2cqw; 
+            font-size: 0.9em; 
             width: 100%;
         }
-
         .owner-name { 
-            font-size: 2.8cqw; 
-            margin-top: 6px; 
+            font-size: 0.75em; 
+            margin-top: 8px; 
             opacity: 0.9; 
             text-align: center;
         }
 
         /* --- RSVP CUSTOM STYLE --- */
         .rsvp-form-container {
-            width: 90%;
+            width: 85%;
+            max-width: 420px;
             background: #be8dac;
             backdrop-filter: blur(4px);
             border: 1px solid #fcf6ff;
             border-radius: 12px;
-            padding: 12px;
+            padding: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
             z-index: 10;
-            margin-top: 5px; 
+            margin-top: 10px; 
+            position: relative !important;
+            opacity: 1 !important;
+            transform: none !important;
             flex-shrink: 0;
         }
 
         .form-group {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: flex;
             flex-direction: column;
             text-align: left;
         }
 
         .form-group label {
-            font-size: 2.5cqw;
+            font-size: 0.7rem;
             font-weight: 600;
             color: #fcf6ff;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .form-control {
             width: 100%;
             font-family: 'Montserrat', sans-serif;
-            font-size: 3cqw;
-            padding: 6px 8px;
+            font-size: 0.8rem;
+            padding: 8px 10px;
             background-color: #ffffff;
             border: 1px solid #ffffff;
             border-radius: 6px;
             color: #333;
             outline: none;
+            transition: border-color 0.2s;
         }
 
-        .form-control:focus { border-color: #f9a34e; }
+        .form-control:focus {
+            border-color: #f9a34e;
+        }
 
         textarea.form-control {
             resize: none;
-            height: 55px; 
+            height: 75px; 
         }
 
         .form-footer {
             display: flex;
             justify-content: flex-end;
-            margin-top: 6px;
+            margin-top: 10px;
         }
 
         .btn-submit {
             font-family: 'Montserrat', sans-serif;
-            font-size: 2.6cqw;
+            font-size: 0.7rem;
             font-weight: 700;
             color: #fcf6ff;
             background-color: #f9a34e;
             border: none;
-            padding: 6px 16px;
+            padding: 8px 20px;
             border-radius: 4px;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #f9a34e;
         }
 
         .comments-section {
-            width: 90%;
-            margin-top: 10px;
-            margin-bottom: 10px; 
+            width: 85%;
+            max-width: 420px;
+            margin-top: 15px;
+            margin-bottom: 15px; 
             text-align: left;
             z-index: 10;
+            position: relative !important;
+            opacity: 1 !important;
+            transform: none !important;
             overflow-y: auto;
             flex: 1;
-            padding-right: 2px;
+            padding-right: 4px;
             -webkit-overflow-scrolling: touch;
         }
 
-        .comments-section::-webkit-scrollbar { width: 4px; }
+        .comments-section::-webkit-scrollbar {
+            width: 4px;
+        }
         .comments-section::-webkit-scrollbar-thumb {
             background: rgba(242, 110, 164, 0.4);
             border-radius: 4px;
         }
 
         .comments-count {
-            font-size: 2.8cqw;
+            font-size: 0.75rem;
             font-weight: 700;
             color: #f9a34e;
             border-bottom: 1px solid #fcf6ff;
-            padding-bottom: 3px;
-            margin-bottom: 6px;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
         }
 
         .comments-list {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            min-height: 60px;
+            gap: 8px;
+            min-height: 80px;
+            margin-bottom: 3%;
         }
 
         .comment-item {
             background: #ffffff;
             backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             border: 1px solid #fcf6ff;
-            padding: 8px 10px;
+            padding: 10px 12px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
             animation: fadeInItem 0.5s ease-out forwards;
@@ -718,19 +728,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
 
         .comment-name {
-            font-size: 2.8cqw;
+            font-size: 0.75rem;
             font-weight: 700;
             color: #be8dac;
         }
 
         .comment-badge {
-            font-size: 2cqw;
+            font-size: 0.55rem;
             font-weight: 600;
-            padding: 1px 4px;
+            padding: 1px 5px;
             border-radius: 4px;
             text-transform: uppercase;
         }
@@ -739,9 +749,9 @@
         .badge-belum { background-color: #f3aad9; color: #fcf6ff; }
 
         .comment-text {
-            font-size: 2.6cqw;
+            font-size: 0.7rem;
             color: #444;
-            line-height: 1.2;
+            line-height: 1.3;
             word-break: break-word;
         }
 
@@ -750,18 +760,19 @@
             justify-content: center;
             align-items: center;
             gap: 6px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .btn-page {
             background: var(--primary-color);
             color: #fff;
             border: none;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 4px;
-            font-size: 2.5cqw;
+            font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
+            transition: opacity 0.2s ease;
         }
 
         .btn-page:disabled {
@@ -771,24 +782,13 @@
         }
 
         .page-info {
-            font-size: 2.5cqw;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #444;
         }
 
         /* LIGHTBOX PREVIEW */
-        .lightbox { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100vw; height: 100vh; 
-            background: rgba(0,0,0,0.92); 
-            z-index: 3000; 
-            display: none; 
-            justify-content: center; 
-            align-items: center; 
-            flex-direction: column; 
-            padding: 20px; 
-        }
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 300; display: none; justify-content: center; align-items: center; flex-direction: column; padding: 20px; }
         .lightbox img { max-width: 90%; max-height: 75vh; object-fit: contain; border-radius: 8px; }
         .lightbox-close { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 2rem; cursor: pointer; }
         .btn-download-lightbox { margin-top: 15px; padding: 10px 24px; background: var(--primary-color); color: #fff; text-decoration: none; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: inline-block; }
@@ -906,7 +906,7 @@
 
         <!-- Modal 4: RSVP -->
         <div class="modal-overlay" id="modal-rsvp">
-            <div class="modal-body-custom-bg" style="background-image: url('isirsvp.png'); padding-top: 60px;">
+            <div class="modal-body-custom-bg" style="background-image: url('isirsvp.png'); padding-top: 80px;">
                 <span class="btn-close-modal" onclick="closeModal('modal-rsvp')">&times;</span>
                 
                 <div class="rsvp-form-container">
@@ -1093,6 +1093,7 @@
             if(modal) {
                 modal.classList.add('active');
                 activeModalId = id;
+                // Tambahkan state baru ke riwayat browser
                 history.pushState({ modalOpen: true, modalId: id }, "");
             }
             if(id === 'modal-rsvp') { loadRSVPData(); }
@@ -1103,6 +1104,7 @@
             if(modal) modal.classList.remove('active');
             if (activeModalId === id) activeModalId = null;
 
+            // Jika ditutup via tombol x/manual dan bukan via navigasi back hp, mundurkan history browser
             if (!isBackNavigation && history.state && history.state.modalOpen) {
                 history.back();
             }
@@ -1152,6 +1154,7 @@
                 .catch(err => console.error("Error loading RSVP:", err));
         }
 
+        // RENDER KOMENTAR DENGAN PAGINATION (MAX 5 PER HALAMAN)
         function renderPaginatedComments() {
             const list = document.getElementById('comments-list');
             const paginationContainer = document.getElementById('pagination-container');
