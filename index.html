@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Undangan Pernikahan Digital</title>
+    
+    <!-- OPEN GRAPH METADATA UNTUK THUMBNAIL WHATSAPP / SOCIAL MEDIA -->
+    <meta property="og:title" content="Undangan Pernikahan Digital">
+    <meta property="og:description" content="Kami mengundang Anda untuk hadir di acara pernikahan kami.">
+    <meta property="og:image" content="thumbnail.jpg">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CONFIG CUSTOM ELEMEN (POSISI %, UKURAN %, DLSB) --- */
+        :root {
+            /* Rasio Frame Utama Canvas (9:16) */
+            --frame-ratio: 9 / 16;
+            
+            /* --- CONFIG COVER CONTENT --- */
+            --covernama-top: 30%;
+            --covernama-left: 50%;
+            --covernama-width: 50%;
+            --covernama-transform: translate(-50%, -50%);
+
+            --guest-box-top: 75%;
+            --guest-box-left: 50%;
+            --guest-box-width: 80%;
+            --guest-box-transform: translate(-50%, -50%);
+
+            --btn-open-bottom: 14%;
+            --btn-open-left: 50%;
+            --btn-open-width: 50%;
+            --btn-open-transform: translateX(-50%);
+
+            /* --- 6 ELEMEN INTERAKTIF MENU --- */
+            --elem1-top: 40%; --elem1-left: 55%; --elem1-width: 40%;
+            --elem2-top: 24%; --elem2-left: 10%; --elem2-width: 40%;
+            --elem3-top: 68%; --elem3-left: 10%; --elem3-width: 39%;
+            --elem4-top: 49%; --elem4-left: 8%; --elem4-width: 40%;
+            --elem5-top: 68%; --elem5-left: 54%; --elem5-width: 38%;
+            --elem6-top: 14%; --elem6-left: 56%; --elem6-width: 36%;
+
+            /* --- CONFIG GALERI CUSTOM --- */
+            --gallery-top-spacing: 28.5%; /* Jarak ruang kosong atas untuk tulisan */
+
+            /* --- CONFIG ELEMEN DI DALAM MODAL WAKTU & TEMPAT --- */
+            --countdown-top: 35%;
+            --countdown-left: 50%;
+            --countdown-width: 80%;
+            --countdown-size: 1.5rem;
+            --countdown-box-padding: 8px 8px; /* Pengaturan besar/kecil baloon countdown */
+
+            /* Pengaturan Posisi & Ukuran Tombol Google Calendar */
+            --cal-btn-top: 46%;
+            --cal-btn-left: 50%;
+            --cal-btn-width: 45%;
+
+            /* Pengaturan Posisi & Ukuran Tombol Google Maps */
+            --maps-btn-top: 128%;
+            --maps-btn-left: 50%;
+            --maps-btn-width: 50%;
+
+            /* Style Modals & Bank Card */
+            --primary-color: #f9a34e;
+            --secondary-color: #f9a34e;
+            --bg-color: #fcf6ff;
+
+            /* Musik Icon */
+            --music-icon-color: #ffffff;
+            --music-bg-color: #be8dac;
+
+            /* --- CUSTOM UKURAN TEKS REKENING / BANK CARD --- */
+            --bank-card-font-size: 1rem; /* Ubah ukuran ini sesuai kebutuhan Anda */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #111111;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* CONTAINER UTAMA KONSISTEN 9:16 DI HP & LAPTOP */
+        .stage-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: calc(100vh * (9 / 16));
+            max-height: 100vh;
+            aspect-ratio: 9 / 16;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+        }
+
+        /* --- COVER GATE ANIMATION --- */
+        #main-cover {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: auto;
+        }
+
+        .gate-door {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background-color: var(--bg-color);
+            background-size: 200% 100%;
+            background-repeat: no-repeat;
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 101;
+        }
+
+        .gate-left {
+            left: 0;
+            background-image: url('cover.png');
+            background-position: left center;
+            border-right: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .gate-right {
+            right: 0;
+            background-image: url('cover.png');
+            background-position: right center;
+            border-left: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .cover-content {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 102;
+            transition: opacity 0.8s ease;
+        }
+
+        .cover-title-img {
+            position: absolute;
+            top: var(--covernama-top);
+            left: var(--covernama-left);
+            width: var(--covernama-width);
+            max-width: 320px;
+            height: auto;
+            transform: var(--covernama-transform);
+            opacity: 0;
+            animation: coverEnter 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.3s;
+        }
+
+        .guest-box {
+            position: absolute;
+            top: var(--guest-box-top);
+            left: var(--guest-box-left);
+            width: var(--guest-box-width);
+            transform: var(--guest-box-transform);
+            text-align: center;
+            opacity: 0;
+            animation: coverEnter 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.7s;
+        }
+
+        .guest-title {
+            font-size: 0.75rem;
+            color: #f7e4c0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .guest-name {
+            font-family: 'Badhorse', serif;
+            font-size: 1.4rem;
+            color: #f7e4c0;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .btn-open-wrapper {
+            position: absolute;
+            bottom: var(--btn-open-bottom);
+            left: var(--btn-open-left);
+            width: var(--btn-open-width);
+            max-width: 200px;
+            transform: var(--btn-open-transform);
+            cursor: pointer;
+            opacity: 0;
+            animation: coverEnter 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards 1s;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-open-wrapper:active { transform: var(--btn-open-transform) scale(0.92); }
+        .btn-open-png { width: 100%; height: auto; display: block; }
+
+        @keyframes coverEnter {
+            to { opacity: 1; }
+        }
+
+        #main-cover.opened .gate-left { transform: translateX(-100%); }
+        #main-cover.opened .gate-right { transform: translateX(100%); }
+        #main-cover.opened .cover-content { opacity: 0; pointer-events: none; }
+
+        /* --- MAIN DASHBOARD --- */
+        #main-dashboard {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('bgisi.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            z-index: 10;
+        }
+
+        .instruction-hint {
+            position: absolute;
+            bottom: 5%;
+            width: 100%;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #333333;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            z-index: 20;
+            animation: blinkAnim 1.2s infinite ease-in-out;
+        }
+
+        @keyframes blinkAnim {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        .interactive-elem {
+            position: absolute;
+            cursor: pointer;
+            z-index: 25;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: gentleShake 3s ease-in-out infinite;
+            transition: transform 0.2s ease;
+        }
+
+        .interactive-elem img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+        }
+
+        .interactive-elem:active { transform: scale(0.92) !important; }
+
+        @keyframes gentleShake {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            20% { transform: translateY(-3px) rotate(-1.5deg); }
+            40% { transform: translateY(2px) rotate(1.5deg); }
+            60% { transform: translateY(-2px) rotate(-1deg); }
+            80% { transform: translateY(1px) rotate(1deg); }
+        }
+
+        #elem-1 { top: var(--elem1-top); left: var(--elem1-left); width: var(--elem1-width); animation-delay: 0s; }
+        #elem-2 { top: var(--elem2-top); left: var(--elem2-left); width: var(--elem2-width); animation-delay: 0.5s; }
+        #elem-3 { top: var(--elem3-top); left: var(--elem3-left); width: var(--elem3-width); animation-delay: 1s; }
+        #elem-4 { top: var(--elem4-top); left: var(--elem4-left); width: var(--elem4-width); animation-delay: 1.5s; }
+        #elem-5 { top: var(--elem5-top); left: var(--elem5-left); width: var(--elem5-width); animation-delay: 2s; }
+        #elem-6 { top: var(--elem6-top); left: var(--elem6-left); width: var(--elem6-width); animation-delay: 2.5s; }
+
+        /* --- MUSIC CONTROLLER --- */
+        .music-controller {
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: var(--music-bg-color);
+            border: 2px solid #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 150;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+            overflow: hidden;
+        }
+
+        .music-controller:active { transform: scale(0.9); }
+
+        .music-icon-svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--music-icon-color);
+            position: relative;
+            overflow: visible;
+        }
+
+        .music-controller .slash-line { display: none; }
+        .music-controller.muted .slash-line { display: block; }
+        .music-controller.playing { animation: spin 3s linear infinite; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- POPUP / MODAL OVERLAYS --- */
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(5px);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            padding: 20px 0;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* CONTAINER GENERAL DENGAN LEBAR 90% DARI STAGE & BISA DI-SCROLL */
+        .modal-body-scrollable {
+            position: relative;
+            width: 90%;
+            max-height: 88vh; /* Batas tinggi modal dari layar */
+            background: var(--bg-color);
+            border-radius: 16px;
+            padding: 0;
+            overflow-y: auto; /* Memungkinkan Scroll Ke Bawah */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+            -webkit-overflow-scrolling: touch; /* Smooth Scroll Mobile */
+        }
+
+        /* Scrollbar styling agar lebih cantik */
+        .modal-body-scrollable::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-body-scrollable::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+        .modal-overlay.active .modal-body-scrollable { transform: translateY(0); }
+
+        /* UNTUK MODAL PEMANFAATAN GAMBAR PANJANG (Tentang Kami & Story) */
+        .modal-body-png {
+            position: relative;
+            width: 90%;
+            max-height: 88vh;
+            overflow-y: auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: transparent;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-png-content {
+            width: 100%;
+            height: auto; /* Mengikuti panjang asli gambar agar bisa di-scroll */
+            display: block;
+        }
+
+        /* UNTUK MODAL WAKTU & TEMPAT */
+        .modal-waktu-container {
+            position: relative;
+            width: 90%;
+            max-height: 88vh;
+            overflow-y: auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .waktu-bg-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .time-sub-elem {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        /* Countdown Box */
+        #countdown-box {
+            top: var(--countdown-top);
+            left: var(--countdown-left);
+            width: var(--countdown-width);
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            font-size: var(--countdown-size);
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .time-unit {
+            background: rgba(255, 255, 255, 0.9);
+            padding: var(--countdown-box-padding);
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            flex: 1;
+        }
+
+        .time-unit span {
+            display: block;
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: #555;
+            text-transform: uppercase;
+        }
+
+        /* Tombol Google Calendar & Maps */
+        #btn-google-calendar {
+            top: var(--cal-btn-top);
+            left: var(--cal-btn-left);
+            width: var(--cal-btn-width);
+            cursor: pointer;
+        }
+
+        #btn-google-maps {
+            top: var(--maps-btn-top);
+            left: var(--maps-btn-left);
+            width: var(--maps-btn-width);
+            cursor: pointer;
+        }
+
+        .time-sub-btn img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+        }
+
+        .time-sub-btn:active { transform: translate(-50%, -50%) scale(0.92); }
+
+        /* MODAL BACKGROUND CUSTOM (RSVP & GIFT) DENGAN RASIO 9:16 */
+        .modal-body-custom-bg {
+            position: relative;
+            width: 90%;
+            aspect-ratio: 9 / 20;
+            max-height: 80vh;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 16px;
+            padding: 24px 18px;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* MODIFIKASI KHUSUS MODAL RSVP AGAR HANYA KOMENTAR YANG SCROLLABLE */
+        #modal-rsvp .modal-body-custom-bg {
+            overflow: hidden !important;
+        }
+
+        /* TOMBOL CLOSE DI DALAM FRAME MODAL */
+        .btn-close-modal {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+            background: rgba(255, 255, 255, 0.9);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            line-height: 1;
+            z-index: 300;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .btn-close-modal:active {
+            transform: scale(0.9);
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        /* GALERI DENGAN BACKGROUND 9:45 & JARAK ATAS CUSTOM */
+        .modal-gallery-container {
+            position: relative;
+            width: 90%;
+            height: auto;
+            max-height: calc(100vh - 40px);
+            max-height: calc(100dvh - 40px);
+            overflow-y: auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background-image: url('isigaleri.png');
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-attachment: local;
+            aspect-ratio: 9 / 57;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .gallery-vertical-list { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            width: 100%; 
+            padding: var(--gallery-top-spacing) 15px 20px 15px; 
+        }
+
+        .gallery-card { 
+            position: relative; 
+            width: 85%; 
+            margin: 0 auto;
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            background: #000; 
+        }
+        .gallery-card img { width: 100%; height: auto; display: block; cursor: pointer; transition: transform 0.3s ease; }
+        .gallery-card img:hover { transform: scale(1.02); }
+
+        /* WEDDING GIFT (DI-SET DI TENGAH & BISA CUSTOM UKURAN) */
+        .gift-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            margin-top: auto;
+            margin-bottom: auto; 
+            width: 100%; 
+            font-size: var(--bank-card-font-size);
+            text-align: center;
+        }
+        .bank-card { 
+            background: #be8dac; 
+            border-radius: 12px; 
+            padding: 16px; 
+            color: #fff; 
+            backdrop-filter: blur(2px); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .bank-name { 
+            font-size: 0.85em; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            text-align: center;
+        }
+        .account-box { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px;
+            background: var(--secondary-color); 
+            padding: 10px 12px; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            font-size: 0.9em; 
+            width: 100%;
+        }
+        .owner-name { 
+            font-size: 0.75em; 
+            margin-top: 8px; 
+            opacity: 0.9; 
+            text-align: center;
+        }
+
+        /* --- RSVP CUSTOM STYLE UPDATE --- */
+        .rsvp-form-container {
+            width: 85%;
+            max-width: 420px;
+            background: #be8dac;
+            backdrop-filter: blur(4px);
+            border: 1px solid #fcf6ff;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            z-index: 10;
+            margin-top: 10px; 
+            position: relative !important;
+            opacity: 1 !important;
+            transform: none !important;
+            flex-shrink: 0; /* Menahan form agar tidak tergeser/mengecil */
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #fcf6ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            padding: 8px 10px;
+            background-color: #ffffff;
+            border: 1px solid #ffffff;
+            border-radius: 6px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #f9a34e;
+        }
+
+        textarea.form-control {
+            resize: none;
+            height: 75px; 
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .btn-submit {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #fcf6ff;
+            background-color: #f9a34e;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #f9a34e;
+        }
+
+        .comments-section {
+            width: 85%;
+            max-width: 420px;
+            margin-top: 15px;
+            margin-bottom: 15px; 
+            text-align: left;
+            z-index: 10;
+            position: relative !important;
+            opacity: 1 !important;
+            transform: none !important;
+            overflow-y: auto; /* Memungkinkan hanya bagian komentar yang bisa di-scroll */
+            flex: 1;
+            padding-right: 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Styling scrollbar khusus komentar */
+        .comments-section::-webkit-scrollbar {
+            width: 4px;
+        }
+        .comments-section::-webkit-scrollbar-thumb {
+            background: rgba(242, 110, 164, 0.4);
+            border-radius: 4px;
+        }
+
+        .comments-count {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #f9a34e;
+            border-bottom: 1px solid #fcf6ff;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 80px;
+            margin-bottom: 3%;
+        }
+
+        .comment-item {
+            background: #ffffff;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid #fcf6ff;
+            padding: 10px 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            animation: fadeInItem 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeInItem {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .comment-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #be8dac;
+        }
+
+        .comment-badge {
+            font-size: 0.55rem;
+            font-weight: 600;
+            padding: 1px 5px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .badge-hadir { background-color: #be8dac; color: #fcf6ff; }
+        .badge-tidak { background-color: #5f3b52; color: #fcf6ff; }
+        .badge-belum { background-color: #f3aad9; color: #fcf6ff; }
+
+        .comment-text {
+            font-size: 0.7rem;
+            color: #444;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .btn-page {
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-page:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .page-info {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #444;
+        }
+
+        /* LIGHTBOX PREVIEW */
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 300; display: none; justify-content: center; align-items: center; flex-direction: column; padding: 20px; }
+        .lightbox img { max-width: 90%; max-height: 75vh; object-fit: contain; border-radius: 8px; }
+        .lightbox-close { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 2rem; cursor: pointer; }
+        .btn-download-lightbox { margin-top: 15px; padding: 10px 24px; background: var(--primary-color); color: #fff; text-decoration: none; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <div class="stage-container">
+
+        <!-- ELEMEN AUDIO -->
+        <audio id="bg-music" loop preload="auto">
+            <source src="lagu.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- 1. COVER GATE -->
+        <div id="main-cover">
+            <div class="gate-door gate-left"></div>
+            <div class="gate-door gate-right"></div>
+            
+            <div class="cover-content">
+                <img src="covernama.png" class="cover-title-img" alt="Nama Pengantin">
+                
+                <div class="guest-box">
+                    <div class="guest-title">Kepada Yth.</div>
+                    <div class="guest-name" id="guest-name-text">Tamu Undangan</div>
+                </div>
+
+                <div class="btn-open-wrapper" onclick="openGate()">
+                    <img src="open.png" class="btn-open-png" alt="Open Invitation">
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. MAIN DASHBOARD -->
+        <div id="main-dashboard">
+
+            <!-- FLOATING MUSIC CONTROLLER -->
+            <div class="music-controller muted" id="music-btn" onclick="toggleMusic()">
+                <svg class="music-icon-svg" viewBox="0 0 24 24">
+                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    <line class="slash-line" x1="-10" y1="34" x2="34" y2="-10" stroke="var(--music-icon-color)" stroke-width="3.5" stroke-linecap="square"/>
+                </svg>
+            </div>
+
+            <div class="instruction-hint">KLIK BENDA UNTUK MELIHAT DETAIL ACARA</div>
+
+            <div class="interactive-elem" id="elem-1" onclick="openModal('modal-tentang')">
+                <img src="nama.png" alt="Tentang Kami">
+            </div>
+
+            <div class="interactive-elem" id="elem-2" onclick="openModal('modal-love')">
+                <img src="story.png" alt="Love Story">
+            </div>
+
+            <div class="interactive-elem" id="elem-3" onclick="openModal('modal-waktu')">
+                <img src="waktu.png" alt="Waktu & Tempat">
+            </div>
+
+            <div class="interactive-elem" id="elem-4" onclick="openModal('modal-rsvp')">
+                <img src="rsvp.png" alt="RSVP">
+            </div>
+
+            <div class="interactive-elem" id="elem-5" onclick="openModal('modal-gift')">
+                <img src="gift.png" alt="Wedding Gift">
+            </div>
+
+            <div class="interactive-elem" id="elem-6" onclick="openModal('modal-galeri')">
+                <img src="galeri.png" alt="Galeri">
+            </div>
+        </div>
+
+        <!-- POPUP MODALS -->
+
+        <!-- Modal 1: Tentang Kami -->
+        <div class="modal-overlay" id="modal-tentang">
+            <div class="modal-body-png">
+                <span class="btn-close-modal" onclick="closeModal('modal-tentang')">&times;</span>
+                <img src="isinama.png" alt="Tentang Kami" class="modal-png-content">
+            </div>
+        </div>
+
+        <!-- Modal 2: Love Story -->
+        <div class="modal-overlay" id="modal-love">
+            <div class="modal-body-png">
+                <span class="btn-close-modal" onclick="closeModal('modal-love')">&times;</span>
+                <img src="isistory.png" alt="Love Story" class="modal-png-content">
+            </div>
+        </div>
+
+        <!-- Modal 3: Waktu & Tempat -->
+        <div class="modal-overlay" id="modal-waktu">
+            <div class="modal-waktu-container">
+                <span class="btn-close-modal" onclick="closeModal('modal-waktu')">&times;</span>
+                <img src="isiwaktu.png" alt="Waktu & Tempat" class="waktu-bg-img">
+
+                <!-- Countdown Timer -->
+                <div id="countdown-box" class="time-sub-elem">
+                    <div class="time-unit"><div id="cd-days">00</div><span>Hari</span></div>
+                    <div class="time-unit"><div id="cd-hours">00</div><span>Jam</span></div>
+                    <div class="time-unit"><div id="cd-minutes">00</div><span>Menit</span></div>
+                    <div class="time-unit"><div id="cd-seconds">00</div><span>Detik</span></div>
+                </div>
+
+                <!-- Tombol Google Calendar -->
+                <div id="btn-google-calendar" class="time-sub-elem time-sub-btn" onclick="openGoogleCalendar()">
+                    <img src="kalender.png" alt="Google Calendar">
+                </div>
+
+                <!-- Tombol Google Maps -->
+                <div id="btn-google-maps" class="time-sub-elem time-sub-btn" onclick="openGoogleMaps()">
+                    <img src="maps.png" alt="Google Maps">
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 4: RSVP -->
+        <div class="modal-overlay" id="modal-rsvp">
+            <div class="modal-body-custom-bg" style="background-image: url('isirsvp.png'); padding-top: 80px;">
+                <span class="btn-close-modal" onclick="closeModal('modal-rsvp')">&times;</span>
+                
+                <div class="rsvp-form-container">
+                    <div class="form-group">
+                        <label>Nama</label>
+                        <input type="text" id="rsvp-nama" class="form-control" placeholder="Nama Anda">
+                    </div>
+                    <div class="form-group">
+                        <label>Kehadiran</label>
+                        <select id="rsvp-status" class="form-control">
+                            <option value="Hadir">Hadir</option>
+                            <option value="Tidak Hadir">Tidak Hadir</option>
+                            <option value="Belum Ditentukan">Belum Ditentukan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ucapan</label>
+                        <textarea id="rsvp-pesan" class="form-control" placeholder="Ucapan & Doa"></textarea>
+                    </div>
+                    <div class="form-footer">
+                        <button class="btn-submit" id="btn-rsvp-submit" onclick="submitRSVP()">Kirim Ucapan</button>
+                    </div>
+                </div>
+
+                <div class="comments-section">
+                    <div class="comments-count">
+                        Total Ucapan: <span id="count-ucapan">0</span>
+                    </div>
+
+                    <div class="comments-list" id="comments-list"></div>
+
+                    <!-- NAVIGASI PAGINATION RSVP -->
+                    <div class="pagination-container" id="pagination-container" style="display: none;">
+                        <button class="btn-page" id="btn-prev-page" onclick="changePage(-1)">Sebelumnya</button>
+                        <span class="page-info" id="page-info">1 / 1</span>
+                        <button class="btn-page" id="btn-next-page" onclick="changePage(1)">Selanjutnya</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 5: Wedding Gift -->
+        <div class="modal-overlay" id="modal-gift">
+            <div class="modal-body-custom-bg" style="background-image: url('isigift.png');">
+                <span class="btn-close-modal" onclick="closeModal('modal-gift')">&times;</span>
+                <div class="gift-container">
+                    <div class="bank-card">
+                        <div class="bank-name">Bank BNI</div>
+                        <div class="account-box" onclick="copyRek('6666666', this)">
+                            <span>6666666</span>
+                            <small>Salin</small>
+                        </div>
+                        <div class="owner-name">a.n Hazela</div>
+                    </div>
+                    <div class="bank-card">
+                        <div class="bank-name">Bank BCA</div>
+                        <div class="account-box" onclick="copyRek('8888888', this)">
+                            <span>8888888</span>
+                            <small>Salin</small>
+                        </div>
+                        <div class="owner-name">a.n Kayden</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal 6: Galeri -->
+        <div class="modal-overlay" id="modal-galeri">
+            <div class="modal-gallery-container">
+                <span class="btn-close-modal" onclick="closeModal('modal-galeri')">&times;</span>
+                
+                <div class="gallery-vertical-list">
+                    <div class="gallery-card"><img src="f1.jpg" alt="Foto 1" onclick="zoomImage(this.src)"></div>
+                    <div class="gallery-card"><img src="f2.jpg" alt="Foto 2" onclick="zoomImage(this.src)"></div>
+                    <div class="gallery-card"><img src="f3.jpg" alt="Foto 3" onclick="zoomImage(this.src)"></div>
+                    <div class="gallery-card"><img src="f4.jpg" alt="Foto 4" onclick="zoomImage(this.src)"></div>
+                    <div class="gallery-card"><img src="f5.jpg" alt="Foto 5" onclick="zoomImage(this.src)"></div>
+                    <div class="gallery-card"><img src="f6.jpg" alt="Foto 6" onclick="zoomImage(this.src)"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LIGHTBOX PREVIEW FOTO -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeZoom()">&times;</span>
+        <img id="lightbox-img" src="" alt="Preview">
+        <a id="lightbox-download-btn" href="#" download class="btn-download-lightbox">Download Foto</a>
+    </div>
+
+    <script>
+        const SPREADSHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwnCVLeiQrxw19oDnEsq09P1eh6WXxLJ5hTZeT5ECFS9VO9b8t3T4S97Ewj5oh9NQkl/exec";
+
+        // CONFIG TANGGAL ACARA
+        const EVENT_DATE = new Date("2026-12-31T09:00:00").getTime();
+        const GOOGLE_MAPS_URL = "https://maps.google.com/?q=-6.175392,106.827153";
+        const CALENDAR_TITLE = "Pernikahan Hazela & Kayden";
+        const CALENDAR_DETAILS = "Acara Pernikahan Hazela & Kayden";
+        const CALENDAR_LOCATION = "Jakarta, Indonesia";
+        const CALENDAR_START_DATE = "20261231T090000Z"; 
+        const CALENDAR_END_DATE = "20261231T130000Z";
+
+        // CONFIG PAGINATION RSVP
+        let rsvpCommentsData = [];
+        let currentPage = 1;
+        const commentsPerPage = 5;
+
+        // TAMU UNDANGAN
+        const urlParams = new URLSearchParams(window.location.search);
+        let guestName = urlParams.get('to') || urlParams.get('n') || urlParams.get('nama');
+        if (guestName) {
+            document.getElementById('guest-name-text').innerText = decodeURIComponent(guestName.replace(/\+/g, ' '));
+        }
+
+        // BUKA COVER
+        function openGate() {
+            document.getElementById('main-cover').classList.add('opened');
+            playMusic();
+            setTimeout(() => {
+                document.getElementById('main-cover').style.display = 'none';
+            }, 1500);
+        }
+
+        // KONTROL MUSIK
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+
+        function playMusic() {
+            audio.play().then(() => {
+                musicBtn.classList.add('playing');
+                musicBtn.classList.remove('muted');
+            }).catch(e => console.log("Autoplay blocked:", e));
+        }
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.classList.add('playing');
+                musicBtn.classList.remove('muted');
+            } else {
+                audio.pause();
+                musicBtn.classList.remove('playing');
+                musicBtn.classList.add('muted');
+            }
+        }
+
+        // COUNTDOWN TIMER
+        const countdownTimer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = EVENT_DATE - now;
+
+            if (distance < 0) {
+                clearInterval(countdownTimer);
+                document.getElementById("countdown-box").innerHTML = "ACARA TELAH BERLANGSUNG";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("cd-days").innerText = days < 10 ? '0' + days : days;
+            document.getElementById("cd-hours").innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById("cd-minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById("cd-seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+        }, 1000);
+
+        function openGoogleCalendar() {
+            const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(CALENDAR_TITLE)}&dates=${CALENDAR_START_DATE}/${CALENDAR_END_DATE}&details=${encodeURIComponent(CALENDAR_DETAILS)}&location=${encodeURIComponent(CALENDAR_LOCATION)}`;
+            window.open(gCalUrl, '_blank');
+        }
+
+        function openGoogleMaps() {
+            window.open(GOOGLE_MAPS_URL, '_blank');
+        }
+
+        // MODALS CONTROL DENGAN HISTORI NAVIGASI HP
+        let activeModalId = null;
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if(modal) {
+                modal.classList.add('active');
+                activeModalId = id;
+                // Tambahkan state baru ke riwayat browser
+                history.pushState({ modalOpen: true, modalId: id }, "");
+            }
+            if(id === 'modal-rsvp') { loadRSVPData(); }
+        }
+
+        function closeModal(id, isBackNavigation = false) {
+            const modal = document.getElementById(id);
+            if(modal) modal.classList.remove('active');
+            if (activeModalId === id) activeModalId = null;
+
+            // Jika ditutup via tombol x/manual dan bukan via navigasi back hp, mundurkan history browser
+            if (!isBackNavigation && history.state && history.state.modalOpen) {
+                history.back();
+            }
+        }
+
+        // DETEKSI TOMBOL BACK HP / NAVIGASI BROWSER
+        window.addEventListener('popstate', function(event) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox && lightbox.style.display === 'flex') {
+                closeZoom(true);
+                return;
+            }
+
+            if (activeModalId) {
+                closeModal(activeModalId, true);
+            }
+        });
+
+        function copyRek(no, elem) {
+            navigator.clipboard.writeText(no);
+            const badge = elem.querySelector('small');
+            const orig = badge.innerText;
+            badge.innerText = "Tersalin!";
+            setTimeout(() => badge.innerText = orig, 1500);
+        }
+
+        // LOAD RSVP
+        function loadRSVPData() {
+            if (!SPREADSHEET_SCRIPT_URL || SPREADSHEET_SCRIPT_URL.includes("GANTI_DENGAN_URL")) return;
+
+            fetch(SPREADSHEET_SCRIPT_URL)
+                .then(res => res.json())
+                .then(data => {
+                    const counter = document.getElementById('count-ucapan');
+
+                    if(data && data.length) {
+                        rsvpCommentsData = data.reverse();
+                        counter.innerText = rsvpCommentsData.length;
+                        currentPage = 1;
+                        renderPaginatedComments();
+                    } else { 
+                        counter.innerText = '0';
+                        rsvpCommentsData = [];
+                        renderPaginatedComments();
+                    }
+                })
+                .catch(err => console.error("Error loading RSVP:", err));
+        }
+
+        // RENDER KOMENTAR DENGAN PAGINATION (MAX 5 PER HALAMAN)
+        function renderPaginatedComments() {
+            const list = document.getElementById('comments-list');
+            const paginationContainer = document.getElementById('pagination-container');
+            list.innerHTML = '';
+
+            if (rsvpCommentsData.length === 0) {
+                paginationContainer.style.display = 'none';
+                return;
+            }
+
+            paginationContainer.style.display = 'flex';
+
+            const totalPages = Math.ceil(rsvpCommentsData.length / commentsPerPage);
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIndex = (currentPage - 1) * commentsPerPage;
+            const endIndex = startIndex + commentsPerPage;
+            const paginatedItems = rsvpCommentsData.slice(startIndex, endIndex);
+
+            paginatedItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'comment-item';
+                
+                let badgeClass = 'badge-belum';
+                if (item.kehadiran === 'Hadir') badgeClass = 'badge-hadir';
+                else if (item.kehadiran === 'Tidak Hadir') badgeClass = 'badge-tidak';
+
+                div.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-name">${item.nama}</span>
+                        <span class="comment-badge ${badgeClass}">${item.kehadiran}</span>
+                    </div>
+                    <div class="comment-text">${item.ucapan}</div>
+                `;
+                list.appendChild(div);
+            });
+
+            document.getElementById('page-info').innerText = `${currentPage} / ${totalPages}`;
+            document.getElementById('btn-prev-page').disabled = currentPage === 1;
+            document.getElementById('btn-next-page').disabled = currentPage === totalPages;
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderPaginatedComments();
+        }
+
+        // SUBMIT RSVP
+        function submitRSVP() {
+            const nama = document.getElementById('rsvp-nama').value;
+            const status = document.getElementById('rsvp-status').value;
+            const pesan = document.getElementById('rsvp-pesan').value;
+            const btnSubmit = document.getElementById('btn-rsvp-submit');
+
+            if(!nama || !pesan) {
+                alert("Harap isi nama dan ucapan.");
+                return;
+            }
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerText = "Mengirim...";
+
+            const payload = { nama: nama, kehadiran: status, ucapan: pesan };
+
+            if (SPREADSHEET_SCRIPT_URL && !SPREADSHEET_SCRIPT_URL.includes("GANTI_DENGAN_URL")) {
+                fetch(SPREADSHEET_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(() => { appendLocalComment(nama, status, pesan); resetForm(btnSubmit); })
+                .catch(() => { appendLocalComment(nama, status, pesan); resetForm(btnSubmit); });
+            } else {
+                appendLocalComment(nama, status, pesan);
+                resetForm(btnSubmit);
+            }
+        }
+
+        function appendLocalComment(nama, status, pesan) {
+            const counter = document.getElementById('count-ucapan');
+            const newComment = { nama: nama, kehadiran: status, ucapan: pesan };
+            
+            rsvpCommentsData.unshift(newComment);
+            counter.innerText = rsvpCommentsData.length;
+            currentPage = 1;
+            renderPaginatedComments();
+        }
+
+        function resetForm(btnSubmit) {
+            document.getElementById('rsvp-nama').value = '';
+            document.getElementById('rsvp-pesan').value = '';
+            btnSubmit.disabled = false;
+            btnSubmit.innerText = "Kirim Ucapan";
+        }
+
+        // LIGHTBOX
+        function zoomImage(src) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            const downloadBtn = document.getElementById('lightbox-download-btn');
+            
+            img.src = src;
+            downloadBtn.href = src;
+            lightbox.style.display = 'flex';
+            history.pushState({ lightboxOpen: true }, "");
+        }
+
+        function closeZoom(isBackNavigation = false) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox) lightbox.style.display = 'none';
+            
+            if (!isBackNavigation && history.state && history.state.lightboxOpen) {
+                history.back();
+            }
+        }
+    </script>
+</body>
+</html>
