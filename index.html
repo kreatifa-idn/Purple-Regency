@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Undangan Pernikahan Digital</title>
     
     <!-- OPEN GRAPH METADATA UNTUK THUMBNAIL WHATSAPP / SOCIAL MEDIA -->
@@ -43,14 +43,14 @@
             --elem6-top: 14%; --elem6-left: 56%; --elem6-width: 36%;
 
             /* --- CONFIG GALERI CUSTOM --- */
-            --gallery-top-spacing: 28.5%; /* Jarak ruang kosong atas untuk tulisan */
+            --gallery-top-spacing: 28.5%;
 
             /* --- CONFIG ELEMEN DI DALAM MODAL WAKTU & TEMPAT --- */
             --countdown-top: 35%;
             --countdown-left: 50%;
             --countdown-width: 80%;
-            --countdown-size: 1.5rem;
-            --countdown-box-padding: 8px 8px; /* Pengaturan besar/kecil baloon countdown */
+            --countdown-size: 4cqw;
+            --countdown-box-padding: 6px 4px;
 
             /* Pengaturan Posisi & Ukuran Tombol Google Calendar */
             --cal-btn-top: 46%;
@@ -71,15 +71,21 @@
             --music-icon-color: #ffffff;
             --music-bg-color: #be8dac;
 
-            /* --- CUSTOM UKURAN TEKS REKENING / BANK CARD --- */
-            --bank-card-font-size: 1rem; /* Ubah ukuran ini sesuai kebutuhan Anda */
+            /* CUSTOM UKURAN TEKS REKENING */
+            --bank-card-font-size: 3.5cqw;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        body, html {
+        html, body {
             width: 100%;
             height: 100%;
+            height: 100dvh;
             background-color: #111111;
             font-family: 'Montserrat', sans-serif;
             overflow: hidden;
@@ -88,17 +94,19 @@
             align-items: center;
         }
 
-        /* CONTAINER UTAMA KONSISTEN 9:16 DI HP & LAPTOP */
+        /* CONTAINER UTAMA DIKUNCI PRESISI 9:16 DI HP & LAPTOP */
         .stage-container {
             position: relative;
             width: 100vw;
             height: 100vh;
-            max-width: calc(100vh * (9 / 16));
-            max-height: 100vh;
+            height: 100dvh;
+            max-height: 100dvh;
+            max-width: calc(100dvh * (9 / 16));
             aspect-ratio: 9 / 16;
             background-color: var(--bg-color);
             overflow: hidden;
             box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            container-type: inline-size; /* Mengunci Font & Elemen terhadap Lebar Stage */
         }
 
         /* --- COVER GATE ANIMATION --- */
@@ -150,7 +158,6 @@
             top: var(--covernama-top);
             left: var(--covernama-left);
             width: var(--covernama-width);
-            max-width: 320px;
             height: auto;
             transform: var(--covernama-transform);
             opacity: 0;
@@ -169,7 +176,7 @@
         }
 
         .guest-title {
-            font-size: 0.75rem;
+            font-size: 3cqw;
             color: #f7e4c0;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -177,8 +184,8 @@
         }
 
         .guest-name {
-            font-family: 'Badhorse', serif;
-            font-size: 1.4rem;
+            font-family: 'Cinzel', serif;
+            font-size: 5cqw;
             color: #f7e4c0;
             font-weight: 700;
             margin-top: 5px;
@@ -189,7 +196,6 @@
             bottom: var(--btn-open-bottom);
             left: var(--btn-open-left);
             width: var(--btn-open-width);
-            max-width: 200px;
             transform: var(--btn-open-transform);
             cursor: pointer;
             opacity: 0;
@@ -215,19 +221,19 @@
             background-image: url('bgisi.png');
             background-repeat: no-repeat;
             background-position: center center;
-            background-size: cover;
+            background-size: 100% 100%;
             z-index: 10;
         }
 
         .instruction-hint {
             position: absolute;
-            bottom: 5%;
+            bottom: 4%;
             width: 100%;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 2.8cqw;
             color: #333333;
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             z-index: 20;
             animation: blinkAnim 1.2s infinite ease-in-out;
         }
@@ -276,10 +282,12 @@
         /* --- MUSIC CONTROLLER --- */
         .music-controller {
             position: absolute;
-            bottom: 80px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
+            bottom: 10%;
+            right: 5%;
+            width: 11cqw;
+            height: 11cqw;
+            max-width: 48px;
+            max-height: 48px;
             border-radius: 50%;
             background-color: var(--music-bg-color);
             border: 2px solid #ffffff;
@@ -296,8 +304,8 @@
         .music-controller:active { transform: scale(0.9); }
 
         .music-icon-svg {
-            width: 24px;
-            height: 24px;
+            width: 55%;
+            height: 55%;
             fill: var(--music-icon-color);
             position: relative;
             overflow: visible;
@@ -321,7 +329,7 @@
             align-items: center;
             opacity: 0;
             transition: opacity 0.4s ease;
-            padding: 20px 0;
+            padding: 10px 0;
         }
 
         .modal-overlay.active {
@@ -329,25 +337,21 @@
             opacity: 1;
         }
 
-        /* CONTAINER GENERAL DENGAN LEBAR 90% DARI STAGE & BISA DI-SCROLL */
         .modal-body-scrollable {
             position: relative;
             width: 90%;
-            max-height: 88vh; /* Batas tinggi modal dari layar */
+            max-height: 88%;
             background: var(--bg-color);
             border-radius: 16px;
             padding: 0;
-            overflow-y: auto; /* Memungkinkan Scroll Ke Bawah */
+            overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transform: translateY(20px);
             transition: transform 0.4s ease;
-            -webkit-overflow-scrolling: touch; /* Smooth Scroll Mobile */
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Scrollbar styling agar lebih cantik */
-        .modal-body-scrollable::-webkit-scrollbar {
-            width: 4px;
-        }
+        .modal-body-scrollable::-webkit-scrollbar { width: 4px; }
         .modal-body-scrollable::-webkit-scrollbar-thumb {
             background: rgba(0,0,0,0.2);
             border-radius: 4px;
@@ -355,11 +359,10 @@
 
         .modal-overlay.active .modal-body-scrollable { transform: translateY(0); }
 
-        /* UNTUK MODAL PEMANFAATAN GAMBAR PANJANG (Tentang Kami & Story) */
         .modal-body-png {
             position: relative;
             width: 90%;
-            max-height: 88vh;
+            max-height: 88%;
             overflow-y: auto;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -369,15 +372,14 @@
 
         .modal-png-content {
             width: 100%;
-            height: auto; /* Mengikuti panjang asli gambar agar bisa di-scroll */
+            height: auto;
             display: block;
         }
 
-        /* UNTUK MODAL WAKTU & TEMPAT */
         .modal-waktu-container {
             position: relative;
             width: 90%;
-            max-height: 88vh;
+            max-height: 88%;
             overflow-y: auto;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -403,7 +405,7 @@
             width: var(--countdown-width);
             display: flex;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
             font-size: var(--countdown-size);
             font-weight: 700;
             color: var(--primary-color);
@@ -420,13 +422,12 @@
 
         .time-unit span {
             display: block;
-            font-size: 0.55rem;
+            font-size: 1.8cqw;
             font-weight: 500;
             color: #555;
             text-transform: uppercase;
         }
 
-        /* Tombol Google Calendar & Maps */
         #btn-google-calendar {
             top: var(--cal-btn-top);
             left: var(--cal-btn-left);
@@ -450,17 +451,16 @@
 
         .time-sub-btn:active { transform: translate(-50%, -50%) scale(0.92); }
 
-        /* MODAL BACKGROUND CUSTOM (RSVP & GIFT) DENGAN RASIO 9:16 */
         .modal-body-custom-bg {
             position: relative;
             width: 90%;
-            aspect-ratio: 9 / 20;
-            max-height: 80vh;
+            aspect-ratio: 9 / 18;
+            max-height: 85%;
             background-size: 100% 100%;
             background-position: center;
             background-repeat: no-repeat;
             border-radius: 16px;
-            padding: 24px 18px;
+            padding: 20px 14px;
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             -webkit-overflow-scrolling: touch;
@@ -469,22 +469,22 @@
             align-items: center;
         }
 
-        /* MODIFIKASI KHUSUS MODAL RSVP AGAR HANYA KOMENTAR YANG SCROLLABLE */
         #modal-rsvp .modal-body-custom-bg {
             overflow: hidden !important;
         }
 
-        /* TOMBOL CLOSE DI DALAM FRAME MODAL */
         .btn-close-modal {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            font-size: 1.4rem;
+            top: 10px;
+            right: 10px;
+            font-size: 5cqw;
             font-weight: bold;
             color: #333;
             background: rgba(255, 255, 255, 0.9);
-            width: 32px;
-            height: 32px;
+            width: 8cqw;
+            height: 8cqw;
+            max-width: 36px;
+            max-height: 36px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -493,29 +493,25 @@
             line-height: 1;
             z-index: 300;
             box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-            transition: transform 0.2s ease, background-color 0.2s ease;
+            transition: transform 0.2s ease;
         }
 
-        .btn-close-modal:active {
-            transform: scale(0.9);
-        }
+        .btn-close-modal:active { transform: scale(0.9); }
 
         .modal-title {
             font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
+            font-size: 4.5cqw;
             color: var(--primary-color);
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-weight: 700;
         }
 
-        /* GALERI DENGAN BACKGROUND 9:45 & JARAK ATAS CUSTOM */
         .modal-gallery-container {
             position: relative;
             width: 90%;
             height: auto;
-            max-height: calc(100vh - 40px);
-            max-height: calc(100dvh - 40px);
+            max-height: 88%;
             overflow-y: auto;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -548,21 +544,21 @@
         .gallery-card img { width: 100%; height: auto; display: block; cursor: pointer; transition: transform 0.3s ease; }
         .gallery-card img:hover { transform: scale(1.02); }
 
-        /* WEDDING GIFT (DI-SET DI TENGAH & BISA CUSTOM UKURAN) */
         .gift-container { 
             display: flex; 
             flex-direction: column; 
-            gap: 15px; 
+            gap: 12px; 
             margin-top: auto;
             margin-bottom: auto; 
             width: 100%; 
             font-size: var(--bank-card-font-size);
             text-align: center;
         }
+
         .bank-card { 
             background: #be8dac; 
             border-radius: 12px; 
-            padding: 16px; 
+            padding: 12px; 
             color: #fff; 
             backdrop-filter: blur(2px); 
             display: flex;
@@ -570,162 +566,144 @@
             align-items: center;
             justify-content: center;
         }
+
         .bank-name { 
-            font-size: 0.85em; 
+            font-size: 3cqw; 
             font-weight: 700; 
             text-transform: uppercase; 
-            margin-bottom: 8px; 
+            margin-bottom: 6px; 
             text-align: center;
         }
+
         .account-box { 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            gap: 10px;
+            gap: 8px;
             background: var(--secondary-color); 
-            padding: 10px 12px; 
+            padding: 8px 10px; 
             border-radius: 6px; 
             font-weight: 600; 
             cursor: pointer; 
-            font-size: 0.9em; 
+            font-size: 3.2cqw; 
             width: 100%;
         }
+
         .owner-name { 
-            font-size: 0.75em; 
-            margin-top: 8px; 
+            font-size: 2.8cqw; 
+            margin-top: 6px; 
             opacity: 0.9; 
             text-align: center;
         }
 
-        /* --- RSVP CUSTOM STYLE UPDATE --- */
+        /* --- RSVP CUSTOM STYLE --- */
         .rsvp-form-container {
-            width: 85%;
-            max-width: 420px;
+            width: 90%;
             background: #be8dac;
             backdrop-filter: blur(4px);
             border: 1px solid #fcf6ff;
             border-radius: 12px;
-            padding: 16px;
+            padding: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
             z-index: 10;
-            margin-top: 10px; 
-            position: relative !important;
-            opacity: 1 !important;
-            transform: none !important;
-            flex-shrink: 0; /* Menahan form agar tidak tergeser/mengecil */
+            margin-top: 5px; 
+            flex-shrink: 0;
         }
 
         .form-group {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             flex-direction: column;
             text-align: left;
         }
 
         .form-group label {
-            font-size: 0.7rem;
+            font-size: 2.5cqw;
             font-weight: 600;
             color: #fcf6ff;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .form-control {
             width: 100%;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
-            padding: 8px 10px;
+            font-size: 3cqw;
+            padding: 6px 8px;
             background-color: #ffffff;
             border: 1px solid #ffffff;
             border-radius: 6px;
             color: #333;
             outline: none;
-            transition: border-color 0.2s;
         }
 
-        .form-control:focus {
-            border-color: #f9a34e;
-        }
+        .form-control:focus { border-color: #f9a34e; }
 
         textarea.form-control {
             resize: none;
-            height: 75px; 
+            height: 55px; 
         }
 
         .form-footer {
             display: flex;
             justify-content: flex-end;
-            margin-top: 10px;
+            margin-top: 6px;
         }
 
         .btn-submit {
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
+            font-size: 2.6cqw;
             font-weight: 700;
             color: #fcf6ff;
             background-color: #f9a34e;
             border: none;
-            padding: 8px 20px;
+            padding: 6px 16px;
             border-radius: 4px;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: background-color 0.2s;
-        }
-
-        .btn-submit:hover {
-            background-color: #f9a34e;
         }
 
         .comments-section {
-            width: 85%;
-            max-width: 420px;
-            margin-top: 15px;
-            margin-bottom: 15px; 
+            width: 90%;
+            margin-top: 10px;
+            margin-bottom: 10px; 
             text-align: left;
             z-index: 10;
-            position: relative !important;
-            opacity: 1 !important;
-            transform: none !important;
-            overflow-y: auto; /* Memungkinkan hanya bagian komentar yang bisa di-scroll */
+            overflow-y: auto;
             flex: 1;
-            padding-right: 4px;
+            padding-right: 2px;
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Styling scrollbar khusus komentar */
-        .comments-section::-webkit-scrollbar {
-            width: 4px;
-        }
+        .comments-section::-webkit-scrollbar { width: 4px; }
         .comments-section::-webkit-scrollbar-thumb {
             background: rgba(242, 110, 164, 0.4);
             border-radius: 4px;
         }
 
         .comments-count {
-            font-size: 0.75rem;
+            font-size: 2.8cqw;
             font-weight: 700;
             color: #f9a34e;
             border-bottom: 1px solid #fcf6ff;
-            padding-bottom: 4px;
-            margin-bottom: 8px;
+            padding-bottom: 3px;
+            margin-bottom: 6px;
         }
 
         .comments-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            min-height: 80px;
-            margin-bottom: 3%;
+            gap: 6px;
+            min-height: 60px;
         }
 
         .comment-item {
             background: #ffffff;
             backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
             border: 1px solid #fcf6ff;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
             animation: fadeInItem 0.5s ease-out forwards;
@@ -740,19 +718,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .comment-name {
-            font-size: 0.75rem;
+            font-size: 2.8cqw;
             font-weight: 700;
             color: #be8dac;
         }
 
         .comment-badge {
-            font-size: 0.55rem;
+            font-size: 2cqw;
             font-weight: 600;
-            padding: 1px 5px;
+            padding: 1px 4px;
             border-radius: 4px;
             text-transform: uppercase;
         }
@@ -761,9 +739,9 @@
         .badge-belum { background-color: #f3aad9; color: #fcf6ff; }
 
         .comment-text {
-            font-size: 0.7rem;
+            font-size: 2.6cqw;
             color: #444;
-            line-height: 1.3;
+            line-height: 1.2;
             word-break: break-word;
         }
 
@@ -772,19 +750,18 @@
             justify-content: center;
             align-items: center;
             gap: 6px;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .btn-page {
             background: var(--primary-color);
             color: #fff;
             border: none;
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 2.5cqw;
             font-weight: 600;
             cursor: pointer;
-            transition: opacity 0.2s ease;
         }
 
         .btn-page:disabled {
@@ -794,13 +771,24 @@
         }
 
         .page-info {
-            font-size: 0.75rem;
+            font-size: 2.5cqw;
             font-weight: 600;
             color: #444;
         }
 
         /* LIGHTBOX PREVIEW */
-        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 300; display: none; justify-content: center; align-items: center; flex-direction: column; padding: 20px; }
+        .lightbox { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100vw; height: 100vh; 
+            background: rgba(0,0,0,0.92); 
+            z-index: 3000; 
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column; 
+            padding: 20px; 
+        }
         .lightbox img { max-width: 90%; max-height: 75vh; object-fit: contain; border-radius: 8px; }
         .lightbox-close { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 2rem; cursor: pointer; }
         .btn-download-lightbox { margin-top: 15px; padding: 10px 24px; background: var(--primary-color); color: #fff; text-decoration: none; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: inline-block; }
@@ -918,7 +906,7 @@
 
         <!-- Modal 4: RSVP -->
         <div class="modal-overlay" id="modal-rsvp">
-            <div class="modal-body-custom-bg" style="background-image: url('isirsvp.png'); padding-top: 80px;">
+            <div class="modal-body-custom-bg" style="background-image: url('isirsvp.png'); padding-top: 60px;">
                 <span class="btn-close-modal" onclick="closeModal('modal-rsvp')">&times;</span>
                 
                 <div class="rsvp-form-container">
@@ -1105,7 +1093,6 @@
             if(modal) {
                 modal.classList.add('active');
                 activeModalId = id;
-                // Tambahkan state baru ke riwayat browser
                 history.pushState({ modalOpen: true, modalId: id }, "");
             }
             if(id === 'modal-rsvp') { loadRSVPData(); }
@@ -1116,7 +1103,6 @@
             if(modal) modal.classList.remove('active');
             if (activeModalId === id) activeModalId = null;
 
-            // Jika ditutup via tombol x/manual dan bukan via navigasi back hp, mundurkan history browser
             if (!isBackNavigation && history.state && history.state.modalOpen) {
                 history.back();
             }
@@ -1166,7 +1152,6 @@
                 .catch(err => console.error("Error loading RSVP:", err));
         }
 
-        // RENDER KOMENTAR DENGAN PAGINATION (MAX 5 PER HALAMAN)
         function renderPaginatedComments() {
             const list = document.getElementById('comments-list');
             const paginationContainer = document.getElementById('pagination-container');
