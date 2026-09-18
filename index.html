@@ -88,9 +88,13 @@
 
     /* --- CUSTOM UKURAN TEKS REKENING / BANK CARD & UKURAN BALOK GIFT --- */
     --bank-card-font-size: 1rem;
-    --gift-card-width: 85%;
+    --gift-card-width: 90%; /* Disesuaikan menjadi 90% dari konten utama */
     --gift-card-padding: 16px;
     --gift-card-gap: 15px;
+
+    /* --- CUSTOM TULISAN KELAP KELIP (INSTRUCTION HINT) --- */
+    --hint-bottom: 5%;
+    --hint-color: #333333;
 }
 
 * {
@@ -124,7 +128,7 @@ body, html {
     box-shadow: 0 0 40px rgba(0,0,0,0.8);
 }
 
-/* --- COVER GATE ANIMATION --- */
+/* --- COVER GATE ANIMATION (FIX 9:16 TIDAK TERPOTONG) --- */
 #main-cover {
     position: absolute;
     top: 0;
@@ -136,6 +140,7 @@ body, html {
     justify-content: center;
     align-items: center;
     pointer-events: auto;
+    background-color: #ffffff; /* Warna latar kosong atas/bawah jika layar lebih panjang */
 }
 
 .gate-door {
@@ -144,7 +149,7 @@ body, html {
     width: 50%;
     height: 100%;
     background-color: var(--bg-color);
-    background-size: calc(var(--stage-width, 100vw) * 2) 100%;
+    background-size: auto 100%; /* Menyesuaikan tinggi penuh agar desain tidak terpotong */
     background-repeat: no-repeat;
     transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
     z-index: 101;
@@ -269,11 +274,11 @@ body, html {
 
 .instruction-hint {
     position: absolute;
-    bottom: 5%;
+    bottom: var(--hint-bottom);
     width: 100%;
     text-align: center;
     font-size: 11px;
-    color: #333333;
+    color: var(--hint-color);
     font-weight: 700;
     letter-spacing: 1.5px;
     z-index: 20;
@@ -480,6 +485,7 @@ body, html {
     border-radius: 6px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     flex: 1;
+    min-width: 0; /* Mencegah elemen countdown jadi gepeng */
 }
 
 .time-unit span {
@@ -517,7 +523,7 @@ body, html {
 
 .modal-body-custom-bg {
     position: relative;
-    width: 90%;
+    width: 90%; /* Diset 90% proporsional seperti lainnya */
     aspect-ratio: 9 / 16;
     max-height: 85vh;
     background-size: 100% 100%;
@@ -606,11 +612,12 @@ body, html {
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     background: #000;
+    aspect-ratio: 3 / 4; /* Thumbnail galeri diatur dengan rasio 3:4 */
 }
 
 .gallery-card img {
     width: 100%;
-    height: 160px;
+    height: 100%;
     object-fit: cover;
     display: block;
     cursor: pointer;
@@ -1022,7 +1029,7 @@ textarea.form-control {
 
     <!-- Modal 4: RSVP -->
     <div class="modal-overlay" id="modal-rsvp">
-        <div class="modal-body-custom-bg" style="background-image: url('isirsvp.png'); padding-top: 25%; width: 85%; max-width: 420px;">
+        <div class="modal-body-custom-bg" style="background-image: url('isirsvp.png'); padding-top: 25%;">
             <span class="btn-close-modal" onclick="closeModal('modal-rsvp')">&times;</span>
             <div class="rsvp-form-container">
                 <div class="form-group">
@@ -1064,7 +1071,7 @@ textarea.form-control {
 
     <!-- Modal 5: Wedding Gift -->
     <div class="modal-overlay" id="modal-gift">
-        <div class="modal-body-custom-bg" style="background-image: url('isigift.png'); padding-top: 25%; width: 85%; max-width: 420px;">
+        <div class="modal-body-custom-bg" style="background-image: url('isigift.png'); padding-top: 25%;">
             <span class="btn-close-modal" onclick="closeModal('modal-gift')">&times;</span>
             <div class="gift-container">
                 <div class="bank-card">
@@ -1113,7 +1120,7 @@ textarea.form-control {
 <script>
 const SPREADSHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwnCVLeiQrxw19oDnEsq09P1eh6WXxLJ5hTZeT5ECFS9VO9b8t3T4S97Ewj5oh9NQkl/exec";
 
-// CONFIG TANGGAL ACARA
+// CONFIG TANGGAL ACARA (Silakan ubah tanggal countdown di sini)
 const EVENT_DATE = new Date("2026-12-31T09:00:00").getTime();
 const GOOGLE_MAPS_URL = "https://maps.google.com/?q=-6.175392,106.827153";
 const CALENDAR_TITLE = "Pernikahan Hazela & Kayden";
@@ -1345,7 +1352,7 @@ function submitRSVP() {
             resetForm(btnSubmit);
         });
     } else {
-        appendLocalColumnComment(nama, status, pesan);
+        appendLocalComment(nama, status, pesan);
         resetForm(btnSubmit);
     }
 }
