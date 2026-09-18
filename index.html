@@ -140,7 +140,19 @@ body, html {
     justify-content: center;
     align-items: center;
     pointer-events: auto;
-    background-color: #ffffff; /* Warna latar kosong atas/bawah jika layar lebih panjang */
+    background-color: #111111; /* Hitam blank di atas/bawah jika layar lebih lebar/panjang */
+}
+
+/* Wrapper pembatas rasio 9:16 khusus untuk cover agar gambar tidak terpotong */
+.cover-ratio-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: calc(100vh * (9 / 16));
+    max-height: 100vh;
+    aspect-ratio: 9 / 16;
+    background-color: var(--bg-color);
+    overflow: hidden;
 }
 
 .gate-door {
@@ -149,7 +161,7 @@ body, html {
     width: 50%;
     height: 100%;
     background-color: var(--bg-color);
-    background-size: auto 100%; /* Menyesuaikan tinggi penuh agar desain tidak terpotong */
+    background-size: 200% 100%; /* Memetakan gambar utuh menyeberang ke kedua sisi pintu */
     background-repeat: no-repeat;
     transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
     z-index: 101;
@@ -177,6 +189,11 @@ body, html {
     height: 100%;
     z-index: 102;
     transition: opacity 0.8s ease;
+    pointer-events: none; /* Agar tombol di dalam cover tetap bisa diklik tapi elemen kosong tidak menghalangi */
+}
+
+.cover-content > * {
+    pointer-events: auto;
 }
 
 .cover-title-img {
@@ -485,7 +502,7 @@ body, html {
     border-radius: 6px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     flex: 1;
-    min-width: 0; /* Mencegah elemen countdown jadi gepeng */
+    min-width: 0;
 }
 
 .time-unit span {
@@ -523,7 +540,7 @@ body, html {
 
 .modal-body-custom-bg {
     position: relative;
-    width: 90%; /* Diset 90% proporsional seperti lainnya */
+    width: 90%;
     aspect-ratio: 9 / 16;
     max-height: 85vh;
     background-size: 100% 100%;
@@ -612,7 +629,7 @@ body, html {
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     background: #000;
-    aspect-ratio: 3 / 4; /* Thumbnail galeri diatur dengan rasio 3:4 */
+    aspect-ratio: 3 / 4;
 }
 
 .gallery-card img {
@@ -939,16 +956,18 @@ textarea.form-control {
 
     <!-- 1. COVER GATE -->
     <div id="main-cover">
-        <div class="gate-door gate-left"></div>
-        <div class="gate-door gate-right"></div>
-        <div class="cover-content">
-            <img src="covernama.png" class="cover-title-img" alt="Nama Pengantin">
-            <div class="guest-box">
-                <div class="guest-title">Kepada Yth.</div>
-                <div class="guest-name" id="guest-name-text">Tamu Undangan</div>
-            </div>
-            <div class="btn-open-wrapper" onclick="openGate()">
-                <img src="open.png" class="btn-open-png" alt="Open Invitation">
+        <div class="cover-ratio-wrapper">
+            <div class="gate-door gate-left"></div>
+            <div class="gate-door gate-right"></div>
+            <div class="cover-content">
+                <img src="covernama.png" class="cover-title-img" alt="Nama Pengantin">
+                <div class="guest-box">
+                    <div class="guest-title">Kepada Yth.</div>
+                    <div class="guest-name" id="guest-name-text">Tamu Undangan</div>
+                </div>
+                <div class="btn-open-wrapper" onclick="openGate()">
+                    <img src="open.png" class="btn-open-png" alt="Open Invitation">
+                </div>
             </div>
         </div>
     </div>
