@@ -72,10 +72,10 @@
     --cal-btn-left: 50%;
     --cal-btn-width: 45%;
 
-    /* Pengaturan Posisi & Ukuran Tombol Google Maps */
-    --maps-btn-top: 128%;
+    /* Pengaturan Posisi & Ukuran Tombol Google Maps (Di bawah mendekati 20% dari bawah background & dinaikkan sedikit) */
+    --maps-btn-top: 83%;
     --maps-btn-left: 50%;
-    --maps-btn-width:50%;
+    --maps-btn-width: 50%;
 
     /* Style Modals & Bank Card */
     --primary-color: #f9a34e;
@@ -115,13 +115,13 @@ body, html {
     align-items: center;
 }
 
-/* CONTAINER UTAMA KONSISTEN 9:16 DI HP & LAPTOP */
+/* CONTAINER UTAMA KONSISTEN 9:16 DI HP & LAPTOP DENGAN BLANK HITAM AMAN */
 .stage-container {
     position: relative;
     width: 100vw;
     height: 100vh;
     max-width: calc(100vh * (9 / 16));
-    max-height: 100vh;
+    max-height: calc(100vw * (16 / 9));
     aspect-ratio: 9 / 16;
     background-color: var(--bg-color);
     overflow: hidden;
@@ -140,16 +140,15 @@ body, html {
     justify-content: center;
     align-items: center;
     pointer-events: auto;
-    background-color: #111111; /* Hitam blank di atas/bawah jika layar lebih lebar/panjang */
+    background-color: #111111;
 }
 
-/* Wrapper pembatas rasio 9:16 khusus untuk cover agar gambar tidak terpotong */
 .cover-ratio-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
     max-width: calc(100vh * (9 / 16));
-    max-height: 100vh;
+    max-height: calc(100vw * (16 / 9));
     aspect-ratio: 9 / 16;
     background-color: var(--bg-color);
     overflow: hidden;
@@ -161,7 +160,7 @@ body, html {
     width: 50%;
     height: 100%;
     background-color: var(--bg-color);
-    background-size: 200% 100%; /* Memetakan gambar utuh menyeberang ke kedua sisi pintu */
+    background-size: 200% 100%;
     background-repeat: no-repeat;
     transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
     z-index: 101;
@@ -189,7 +188,7 @@ body, html {
     height: 100%;
     z-index: 102;
     transition: opacity 0.8s ease;
-    pointer-events: none; /* Agar tombol di dalam cover tetap bisa diklik tapi elemen kosong tidak menghalangi */
+    pointer-events: none;
 }
 
 .cover-content > * {
@@ -345,11 +344,12 @@ body, html {
 #elem-5 { top: var(--elem5-top); left: var(--elem5-left); width: var(--elem5-width); animation-delay: 2s; }
 #elem-6 { top: var(--elem6-top); left: var(--elem6-left); width: var(--elem6-width); animation-delay: 2.5s; }
 
-/* --- MUSIC CONTROLLER --- */
+/* --- MUSIC CONTROLLER (DI ATAS KANAN) --- */
 .music-controller {
     position: absolute;
-    bottom: 50px;
+    top: 20px;
     right: 20px;
+    bottom: auto;
     width: 35px;
     height: 35px;
     border-radius: 50%;
@@ -645,12 +645,13 @@ body, html {
     transform: scale(1.02);
 }
 
+/* REKENING TEPAT DI TENGAH BACKGROUND */
 .gift-container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: var(--gift-card-gap);
-    margin-top: 25px;
-    margin-bottom: auto;
+    margin: auto 0;
     width: var(--gift-card-width);
     font-size: var(--bank-card-font-size);
     text-align: center;
@@ -974,7 +975,7 @@ textarea.form-control {
 
     <!-- 2. MAIN DASHBOARD -->
     <div id="main-dashboard">
-        <!-- FLOATING MUSIC CONTROLLER -->
+        <!-- FLOATING MUSIC CONTROLLER (DI ATAS KANAN) -->
         <div class="music-controller muted" id="music-btn" onclick="toggleMusic()">
             <svg class="music-icon-svg" viewBox="0 0 24 24">
                 <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
@@ -1039,7 +1040,7 @@ textarea.form-control {
             <div id="btn-google-calendar" class="time-sub-elem time-sub-btn" onclick="openGoogleCalendar()">
                 <img src="kalender.png" alt="Google Calendar">
             </div>
-            <!-- Tombol Google Maps -->
+            <!-- Tombol Google Maps (Di bawah mendekati 20% dari bawah background & dinaikkan sedikit) -->
             <div id="btn-google-maps" class="time-sub-elem time-sub-btn" onclick="openGoogleMaps()">
                 <img src="maps.png" alt="Google Maps">
             </div>
@@ -1088,7 +1089,7 @@ textarea.form-control {
         </div>
     </div>
 
-    <!-- Modal 5: Wedding Gift -->
+    <!-- Modal 5: Wedding Gift (Rekening tepat di tengah background) -->
     <div class="modal-overlay" id="modal-gift">
         <div class="modal-body-custom-bg" style="background-image: url('isigift.png'); padding-top: 25%;">
             <span class="btn-close-modal" onclick="closeModal('modal-gift')">&times;</span>
