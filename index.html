@@ -61,17 +61,17 @@
     --gallery-top-spacing: 30%;
 
     /* --- CONFIG ELEMEN DI DALAM MODAL WAKTU & TEMPAT --- */
-    --countdown-top: 32%;
+    --countdown-top: 30%;
     --countdown-left: 50%;
-    --countdown-width: 80%;
+    --countdown-width: 85%;
     --countdown-size: 1.5rem;
-    --countdown-box-padding: 15px 15px;
+    --countdown-box-padding: 12px 10px;
 
-    /* Pengaturan Posisi & Ukuran Tombol Google Calendar */
-    --cal-btn-width: 45%;
+    /* Pengaturan Posisi Tombol Google Calendar */
+    --cal-btn-width: 55%;
 
-    /* Pengaturan Posisi & Ukuran Tombol Google Maps (Menggunakan bottom agar konsisten sekitar 10% dari bawah background) */
-    --maps-btn-bottom: 10%;
+    /* Pengaturan Posisi & Ukuran Tombol Google Maps (20% dari bawah) */
+    --maps-btn-bottom: 20%;
     --maps-btn-left: 50%;
     --maps-btn-width: 50%;
 
@@ -86,12 +86,12 @@
 
     /* --- CUSTOM UKURAN TEKS REKENING / BANK CARD & UKURAN BALOK GIFT --- */
     --bank-card-font-size: 1rem;
-    --gift-card-width: 90%; /* Disesuaikan menjadi 90% dari konten utama */
+    --gift-card-width: 85%;
     --gift-card-padding: 16px;
     --gift-card-gap: 15px;
 
     /* --- CUSTOM TULISAN KELAP KELIP (INSTRUCTION HINT) --- */
-    --hint-bottom: 2%;
+    --hint-bottom: 3%;
     --hint-color: #333333;
 }
 
@@ -286,6 +286,7 @@ body, html {
     z-index: 10;
 }
 
+/* TULISAN KELAP KELIP DI BAWAH */
 .instruction-hint {
     position: absolute;
     bottom: var(--hint-bottom);
@@ -460,32 +461,40 @@ body, html {
     display: block;
 }
 
+/* MODAL WAKTU & TEMPAT */
 .modal-waktu-container {
     position: relative;
     width: 90%;
-    max-height: 88vh;
-    overflow-y: auto;
+    aspect-ratio: 9 / 16;
+    max-height: 85vh;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
 }
 
 .waktu-bg-img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     display: block;
 }
 
-.time-sub-elem {
+/* WAKTU WRAPPER (COUNTDOWN + CALENDAR JADI SATU) */
+.waktu-top-group {
     position: absolute;
+    top: var(--countdown-top);
+    left: var(--countdown-left);
+    width: var(--countdown-width);
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
     z-index: 10;
 }
 
 #countdown-box {
-    top: var(--countdown-top);
-    left: var(--countdown-left);
-    width: var(--countdown-width);
-    transform: translate(-50%, -50%);
+    width: 100%;
     display: flex;
     justify-content: center;
     gap: 6px;
@@ -512,14 +521,12 @@ body, html {
     text-transform: uppercase;
 }
 
-/* Kalender tidak lagi custom posisi absolut, tetapi otomatis berada persis di bawah countdown */
 #btn-google-calendar {
-    position: relative;
-    margin: 15px auto 0 auto;
     width: var(--cal-btn-width);
     cursor: pointer;
 }
 
+/* MAPS FIX DI 20% DARI BAWAH */
 #btn-google-maps {
     position: absolute;
     bottom: var(--maps-btn-bottom);
@@ -527,6 +534,7 @@ body, html {
     width: var(--maps-btn-width);
     transform: translateX(-50%);
     cursor: pointer;
+    z-index: 10;
 }
 
 .time-sub-btn img {
@@ -537,10 +545,6 @@ body, html {
 }
 
 .time-sub-btn:active {
-    transform: scale(0.92);
-}
-
-#btn-google-maps:active {
     transform: translateX(-50%) scale(0.92);
 }
 
@@ -565,12 +569,6 @@ body, html {
 #modal-rsvp .modal-body-custom-bg {
     overflow-y: auto !important;
     overflow-x: hidden !important;
-}
-
-/* Container khusus modal Gift agar rekening presisi di tengah vertikal & horizontal */
-#modal-gift .modal-body-custom-bg {
-    justify-content: center;
-    padding-top: 0 !important;
 }
 
 .btn-close-modal {
@@ -657,16 +655,20 @@ body, html {
     transform: scale(1.02);
 }
 
-/* REKENING PAS DI TENGAH CENTER BACKGROUND */
+/* REKENING PAS DI TENGAH ISIGIFT */
 .gift-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: var(--gift-card-gap);
-    margin: 0 auto;
     width: var(--gift-card-width);
     font-size: var(--bank-card-font-size);
     text-align: center;
+    z-index: 10;
 }
 
 .bank-card {
@@ -1040,21 +1042,23 @@ textarea.form-control {
             <span class="btn-close-modal" onclick="closeModal('modal-waktu')">&times;</span>
             <img src="isiwaktu.png" alt="Waktu & Tempat" class="waktu-bg-img">
             
-            <!-- Countdown Timer -->
-            <div id="countdown-box" class="time-sub-elem">
-                <div class="time-unit"><div id="cd-days">00</div><span>Hari</span></div>
-                <div class="time-unit"><div id="cd-hours">00</div><span>Jam</span></div>
-                <div class="time-unit"><div id="cd-minutes">00</div><span>Menit</span></div>
-                <div class="time-unit"><div id="cd-seconds">00</div><span>Detik</span></div>
+            <!-- Group Countdown Timer & Google Calendar -->
+            <div class="waktu-top-group">
+                <div id="countdown-box">
+                    <div class="time-unit"><div id="cd-days">00</div><span>Hari</span></div>
+                    <div class="time-unit"><div id="cd-hours">00</div><span>Jam</span></div>
+                    <div class="time-unit"><div id="cd-minutes">00</div><span>Menit</span></div>
+                    <div class="time-unit"><div id="cd-seconds">00</div><span>Detik</span></div>
+                </div>
+
+                <!-- Tombol Google Calendar -->
+                <div id="btn-google-calendar" class="time-sub-btn" onclick="openGoogleCalendar()">
+                    <img src="kalender.png" alt="Google Calendar">
+                </div>
             </div>
 
-            <!-- Tombol Google Calendar (Sepaket persis di bawah Countdown) -->
-            <div id="btn-google-calendar" class="time-sub-elem time-sub-btn" onclick="openGoogleCalendar()">
-                <img src="kalender.png" alt="Google Calendar">
-            </div>
-
-            <!-- Tombol Google Maps (~10% dari bawah background) -->
-            <div id="btn-google-maps" class="time-sub-elem time-sub-btn" onclick="openGoogleMaps()">
+            <!-- Tombol Google Maps (Di bawah 20% dari bawah) -->
+            <div id="btn-google-maps" class="time-sub-btn" onclick="openGoogleMaps()">
                 <img src="maps.png" alt="Google Maps">
             </div>
         </div>
@@ -1102,7 +1106,7 @@ textarea.form-control {
         </div>
     </div>
 
-    <!-- Modal 5: Wedding Gift (Posisi rekening pas di tengah center background) -->
+    <!-- Modal 5: Wedding Gift (Rekening Pas di Tengah) -->
     <div class="modal-overlay" id="modal-gift">
         <div class="modal-body-custom-bg" style="background-image: url('isigift.png');">
             <span class="btn-close-modal" onclick="closeModal('modal-gift')">&times;</span>
@@ -1178,55 +1182,42 @@ if (guestName) {
 function openGate() {
     document.getElementById('main-cover').classList.add('opened');
     playMusic();
+    setTimeout(() => {
+        document.getElementById('main-cover').style.display = 'none';
+    }, 1500);
 }
 
-// MUSIC CONTROLLER
-const bgMusic = document.getElementById('bg-music');
+// KONTROL MUSIK
+const audio = document.getElementById('bg-music');
 const musicBtn = document.getElementById('music-btn');
 
 function playMusic() {
-    bgMusic.play().then(() => {
-        musicBtn.classList.remove('muted');
+    audio.play().then(() => {
         musicBtn.classList.add('playing');
-    }).catch(e => {
-        console.log("Autoplay blocked:", e);
-    });
+        musicBtn.classList.remove('muted');
+    }).catch(e => console.log("Autoplay blocked:", e));
 }
 
 function toggleMusic() {
-    if (bgMusic.paused) {
-        bgMusic.play();
-        musicBtn.classList.remove('muted');
+    if (audio.paused) {
+        audio.play();
         musicBtn.classList.add('playing');
+        musicBtn.classList.remove('muted');
     } else {
-        bgMusic.pause();
-        musicBtn.classList.add('muted');
+        audio.pause();
         musicBtn.classList.remove('playing');
+        musicBtn.classList.add('muted');
     }
-}
-
-// MODAL CONTROLS
-function openModal(id) {
-    document.getElementById(id).classList.add('active');
-    if (id === 'modal-rsvp') {
-        loadRSVP();
-    }
-}
-
-function closeModal(id) {
-    document.getElementById(id).classList.remove('active');
 }
 
 // COUNTDOWN TIMER
-function updateCountdown() {
+const countdownTimer = setInterval(function() {
     const now = new Date().getTime();
     const distance = EVENT_DATE - now;
 
     if (distance < 0) {
-        document.getElementById('cd-days').innerText = "00";
-        document.getElementById('cd-hours').innerText = "00";
-        document.getElementById('cd-minutes').innerText = "00";
-        document.getElementById('cd-seconds').innerText = "00";
+        clearInterval(countdownTimer);
+        document.getElementById("countdown-box").innerHTML = "ACARA TELAH BERLANGSUNG";
         return;
     }
 
@@ -1235,153 +1226,209 @@ function updateCountdown() {
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
-    document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
-    document.getElementById('cd-minutes').innerText = String(minutes).padStart(2, '0');
-    document.getElementById('cd-seconds').innerText = String(seconds).padStart(2, '0');
-}
+    document.getElementById("cd-days").innerText = days < 10 ? '0' + days : days;
+    document.getElementById("cd-hours").innerText = hours < 10 ? '0' + hours : hours;
+    document.getElementById("cd-minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+    document.getElementById("cd-seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+}, 1000);
 
-setInterval(updateCountdown, 1000);
-updateCountdown();
-
-// EXTERNAL LINKS
 function openGoogleCalendar() {
-    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(CALENDAR_TITLE)}&dates=${CALENDAR_START_DATE}/${CALENDAR_END_DATE}&details=${encodeURIComponent(CALENDAR_DETAILS)}&location=${encodeURIComponent(CALENDAR_LOCATION)}`;
-    window.open(url, '_blank');
+    const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(CALENDAR_TITLE)}&dates=${CALENDAR_START_DATE}/${CALENDAR_END_DATE}&details=${encodeURIComponent(CALENDAR_DETAILS)}&location=${encodeURIComponent(CALENDAR_LOCATION)}`;
+    window.open(gCalUrl, '_blank');
 }
 
 function openGoogleMaps() {
     window.open(GOOGLE_MAPS_URL, '_blank');
 }
 
-// SALIN REKENING
-function copyRek(text, el) {
-    navigator.clipboard.writeText(text).then(() => {
-        const small = el.querySelector('small');
-        const orig = small.innerText;
-        small.innerText = 'Tersalin!';
-        setTimeout(() => { small.innerText = orig; }, 2000);
-    });
+// MODALS CONTROL DENGAN HISTORI NAVIGASI HP
+let activeModalId = null;
+
+function openModal(id) {
+    const modal = document.getElementById(id);
+    if(modal) {
+        modal.classList.add('active');
+        activeModalId = id;
+        history.pushState({ modalOpen: true, modalId: id }, "");
+    }
+    if(id === 'modal-rsvp') {
+        loadRSVPData();
+    }
 }
 
-// LIGHTBOX PREVIEW
-function zoomImage(src) {
-    document.getElementById('lightbox-img').src = src;
-    document.getElementById('lightbox-download-btn').href = src;
-    document.getElementById('lightbox').style.display = 'flex';
+function closeModal(id, isBackNavigation = false) {
+    const modal = document.getElementById(id);
+    if(modal) modal.classList.remove('active');
+    if (activeModalId === id) activeModalId = null;
+
+    if (!isBackNavigation && history.state && history.state.modalOpen) {
+        history.back();
+    }
 }
 
-function closeZoom() {
-    document.getElementById('lightbox').style.display = 'none';
-}
-
-// RSVP & UCAPAN INTEGRATION
-function submitRSVP() {
-    const nama = document.getElementById('rsvp-nama').value.trim();
-    const status = document.getElementById('rsvp-status').value;
-    const pesan = document.getElementById('rsvp-pesan').value.trim();
-    const btnSubmit = document.getElementById('btn-rsvp-submit');
-
-    if (!nama || !pesan) {
-        alert('Mohon isi nama dan ucapan Anda.');
+window.addEventListener('popstate', function(event) {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox && lightbox.style.display === 'flex') {
+        closeZoom(true);
         return;
     }
+    if (activeModalId) {
+        closeModal(activeModalId, true);
+    }
+});
 
-    btnSubmit.disabled = true;
-    btnSubmit.innerText = 'Mengirim...';
-
-    const formData = new FormData();
-    formData.append('nama', nama);
-    formData.append('status', status);
-    formData.append('pesan', pesan);
-
-    fetch(SPREADSHEET_SCRIPT_URL, {
-        method: 'POST',
-        body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-        btnSubmit.disabled = false;
-        btnSubmit.innerText = 'Kirim Ucapan';
-        document.getElementById('rsvp-nama').value = '';
-        document.getElementById('rsvp-pesan').value = '';
-        loadRSVP();
-    })
-    .catch(err => {
-        console.error(err);
-        btnSubmit.disabled = false;
-        btnSubmit.innerText = 'Kirim Ucapan';
-        alert('Gagal mengirim ucapan, silakan coba lagi.');
-    });
+function copyRek(no, elem) {
+    navigator.clipboard.writeText(no);
+    const badge = elem.querySelector('small');
+    const orig = badge.innerText;
+    badge.innerText = "Tersalin!";
+    setTimeout(() => badge.innerText = orig, 1500);
 }
 
-function loadRSVP() {
+// LOAD RSVP
+function loadRSVPData() {
+    if (!SPREADSHEET_SCRIPT_URL || SPREADSHEET_SCRIPT_URL.includes("GANTI_DENGAN_URL")) return;
+
     fetch(SPREADSHEET_SCRIPT_URL)
-    .then(res => res.json())
-    .then(data => {
-        rsvpCommentsData = data || [];
-        document.getElementById('count-ucapan').innerText = rsvpCommentsData.length;
-        currentPage = 1;
-        renderComments();
-    })
-    .catch(err => console.error(err));
+        .then(res => res.json())
+        .then(data => {
+            const counter = document.getElementById('count-ucapan');
+            if(data && data.length) {
+                rsvpCommentsData = data.reverse();
+                counter.innerText = rsvpCommentsData.length;
+                currentPage = 1;
+                renderPaginatedComments();
+            } else {
+                counter.innerText = '0';
+                rsvpCommentsData = [];
+                renderPaginatedComments();
+            }
+        })
+        .catch(err => console.error("Error loading RSVP:", err));
 }
 
-function renderComments() {
-    const listContainer = document.getElementById('comments-list');
-    listContainer.innerHTML = '';
+// RENDER KOMENTAR DENGAN PAGINATION (MAX 5 PER HALAMAN)
+function renderPaginatedComments() {
+    const list = document.getElementById('comments-list');
+    const paginationContainer = document.getElementById('pagination-container');
+    list.innerHTML = '';
 
     if (rsvpCommentsData.length === 0) {
-        listContainer.innerHTML = '<div style="font-size:0.7rem; color:#666; text-align:center; padding:10px;">Belum ada ucapan.</div>';
-        document.getElementById('pagination-container').style.display = 'none';
+        paginationContainer.style.display = 'none';
         return;
     }
 
+    paginationContainer.style.display = 'flex';
     const totalPages = Math.ceil(rsvpCommentsData.length / commentsPerPage);
+
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+
     const startIndex = (currentPage - 1) * commentsPerPage;
     const endIndex = startIndex + commentsPerPage;
-    const pageItems = rsvpCommentsData.slice(startIndex, endIndex);
+    const paginatedItems = rsvpCommentsData.slice(startIndex, endIndex);
 
-    pageItems.forEach(item => {
-        let badgeClass = 'badge-hadir';
-        if (item.status === 'Tidak Hadir') badgeClass = 'badge-tidak';
-        if (item.status === 'Belum Ditentukan') badgeClass = 'badge-belum';
+    paginatedItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'comment-item';
+        
+        let badgeClass = 'badge-belum';
+        if (item.kehadiran === 'Hadir') badgeClass = 'badge-hadir';
+        else if (item.kehadiran === 'Tidak Hadir') badgeClass = 'badge-tidak';
 
-        const el = document.createElement('div');
-        el.className = 'comment-item';
-        el.innerHTML = `
+        div.innerHTML = `
             <div class="comment-header">
-                <span class="comment-name">${escapeHtml(item.nama)}</span>
-                <span class="comment-badge ${badgeClass}">${escapeHtml(item.status)}</span>
+                <span class="comment-name">${item.nama}</span>
+                <span class="comment-badge ${badgeClass}">${item.kehadiran}</span>
             </div>
-            <div class="comment-text">${escapeHtml(item.pesan)}</div>
+            <div class="comment-text">${item.ucapan}</div>
         `;
-        listContainer.appendChild(el);
+        list.appendChild(div);
     });
 
-    if (totalPages > 1) {
-        document.getElementById('pagination-container').style.display = 'flex';
-        document.getElementById('page-info').innerText = `${currentPage} / ${totalPages}`;
-        document.getElementById('btn-prev-page').disabled = (currentPage === 1);
-        document.getElementById('btn-next-page').disabled = (currentPage === totalPages);
-    } else {
-        document.getElementById('pagination-container').style.display = 'none';
-    }
+    document.getElementById('page-info').innerText = `${currentPage} / ${totalPages}`;
+    document.getElementById('btn-prev-page').disabled = currentPage === 1;
+    document.getElementById('btn-next-page').disabled = currentPage === totalPages;
 }
 
 function changePage(direction) {
     currentPage += direction;
-    renderComments();
+    renderPaginatedComments();
 }
 
-function escapeHtml(text) {
-    if (!text) return '';
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+// SUBMIT RSVP
+function submitRSVP() {
+    const nama = document.getElementById('rsvp-nama').value;
+    const status = document.getElementById('rsvp-status').value;
+    const pesan = document.getElementById('rsvp-pesan').value;
+    const btnSubmit = document.getElementById('btn-rsvp-submit');
+
+    if(!nama || !pesan) {
+        alert("Harap isi nama dan ucapan.");
+        return;
+    }
+
+    btnSubmit.disabled = true;
+    btnSubmit.innerText = "Mengirim...";
+
+    const payload = { nama: nama, kehadiran: status, ucapan: pesan };
+
+    if (SPREADSHEET_SCRIPT_URL && !SPREADSHEET_SCRIPT_URL.includes("GANTI_DENGAN_URL")) {
+        fetch(SPREADSHEET_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            appendLocalComment(nama, status, pesan);
+            resetForm(btnSubmit);
+        })
+        .catch(() => {
+            appendLocalComment(nama, status, pesan);
+            resetForm(btnSubmit);
+        });
+    } else {
+        appendLocalComment(nama, status, pesan);
+        resetForm(btnSubmit);
+    }
+}
+
+function appendLocalComment(nama, status, pesan) {
+    const counter = document.getElementById('count-ucapan');
+    const newComment = { nama: nama, kehadiran: status, ucapan: pesan };
+    rsvpCommentsData.unshift(newComment);
+    counter.innerText = rsvpCommentsData.length;
+    currentPage = 1;
+    renderPaginatedComments();
+}
+
+function resetForm(btnSubmit) {
+    document.getElementById('rsvp-nama').value = '';
+    document.getElementById('rsvp-pesan').value = '';
+    btnSubmit.disabled = false;
+    btnSubmit.innerText = "Kirim Ucapan";
+}
+
+// LIGHTBOX
+function zoomImage(src) {
+    const lightbox = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    const downloadBtn = document.getElementById('lightbox-download-btn');
+
+    img.src = src;
+    downloadBtn.href = src;
+    lightbox.style.display = 'flex';
+    history.pushState({ lightboxOpen: true }, "");
+}
+
+function closeZoom(isBackNavigation = false) {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) lightbox.style.display = 'none';
+
+    if (!isBackNavigation && history.state && history.state.lightboxOpen) {
+        history.back();
+    }
 }
 </script>
 </body>
