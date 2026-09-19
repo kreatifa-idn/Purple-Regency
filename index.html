@@ -68,12 +68,12 @@
     --countdown-box-padding: 15px 15px;
 
     /* Pengaturan Posisi & Ukuran Tombol Google Calendar */
-    --cal-btn-top: 43%;
+    --cal-btn-top: 53%;
     --cal-btn-left: 50%;
     --cal-btn-width: 45%;
 
-    /* Pengaturan Posisi & Ukuran Tombol Google Maps (Di bawah mendekati 20% dari bawah background & dinaikkan sedikit) */
-    --maps-btn-top: 120%;
+    /* Pengaturan Posisi & Ukuran Tombol Google Maps (Menggunakan bottom agar konsisten dari bawah background) */
+    --maps-btn-bottom: 12%;
     --maps-btn-left: 50%;
     --maps-btn-width: 50%;
 
@@ -92,11 +92,11 @@
     --gift-card-padding: 16px;
     --gift-card-gap: 15px;
 
-    /* --- CONFIG POSISI REKENING GIFT (Bisa diatur naik / turun, misal: 50% = tengah, <50% = naik, >50% = turun) --- */
-    --gift-container-position: 35% /* Bisa diganti pakai persentase misal: 45% atau 55% */
+    /* --- CONFIG POSISI REKENING GIFT (Bisa diatur naik / turun, misal: 25% = naik, 35% = tengah, 45% = turun) --- */
+    --gift-container-position: 50%;
 
     /* --- CUSTOM TULISAN KELAP KELIP (INSTRUCTION HINT) --- */
-    --hint-bottom: 6%;
+    --hint-bottom: 4%;
     --hint-color: #333333;
 }
 
@@ -294,6 +294,7 @@ body, html {
 .instruction-hint {
     position: absolute;
     bottom: var(--hint-bottom);
+    left: 0;
     width: 100%;
     text-align: center;
     font-size: 11px;
@@ -482,7 +483,6 @@ body, html {
 
 .time-sub-elem {
     position: absolute;
-    transform: translate(-50%, -50%);
     z-index: 10;
 }
 
@@ -490,6 +490,7 @@ body, html {
     top: var(--countdown-top);
     left: var(--countdown-left);
     width: var(--countdown-width);
+    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     gap: 6px;
@@ -520,13 +521,15 @@ body, html {
     top: var(--cal-btn-top);
     left: var(--cal-btn-left);
     width: var(--cal-btn-width);
+    transform: translate(-50%, -50%);
     cursor: pointer;
 }
 
 #btn-google-maps {
-    top: var(--maps-btn-top);
+    bottom: var(--maps-btn-bottom);
     left: var(--maps-btn-left);
     width: var(--maps-btn-width);
+    transform: translateX(-50%);
     cursor: pointer;
 }
 
@@ -539,6 +542,10 @@ body, html {
 
 .time-sub-btn:active {
     transform: translate(-50%, -50%) scale(0.92);
+}
+
+#btn-google-maps:active {
+    transform: translateX(-50%) scale(0.92);
 }
 
 .modal-body-custom-bg {
@@ -654,7 +661,10 @@ body, html {
     flex-direction: column;
     justify-content: center;
     gap: var(--gift-card-gap);
-    margin: var(--gift-container-position) auto auto auto;
+    margin-top: var(--gift-container-position);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
     width: var(--gift-card-width);
     font-size: var(--bank-card-font-size);
     text-align: center;
@@ -1043,7 +1053,7 @@ textarea.form-control {
             <div id="btn-google-calendar" class="time-sub-elem time-sub-btn" onclick="openGoogleCalendar()">
                 <img src="kalender.png" alt="Google Calendar">
             </div>
-            <!-- Tombol Google Maps (Di bawah mendekati 20% dari bawah background & dinaikkan sedikit) -->
+            <!-- Tombol Google Maps (Menggunakan bottom agar pas & tidak naik/turun di HP berbeda) -->
             <div id="btn-google-maps" class="time-sub-elem time-sub-btn" onclick="openGoogleMaps()">
                 <img src="maps.png" alt="Google Maps">
             </div>
