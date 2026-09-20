@@ -492,7 +492,7 @@ body, html {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    z-index: 20; /* Ditingkatkan z-index agar bisa diklik secara presisi */
+    z-index: 20;
     pointer-events: auto;
 }
 
@@ -1346,7 +1346,7 @@ function copyRek(no, elem) {
     setTimeout(() => badge.innerText = orig, 1500);
 }
 
-// LOAD RSVP
+// LOAD RSVP (DISESUAIKAN DENGAN RESPONS GOOGLE APPS SCRIPT)
 function loadRSVPData() {
     if (!SPREADSHEET_SCRIPT_URL || SPREADSHEET_SCRIPT_URL.includes("GANTI_DENGAN_URL")) return;
 
@@ -1357,11 +1357,12 @@ function loadRSVPData() {
             let list = Array.isArray(data) ? data : (data.data || []);
             
             if(list && list.length) {
+                // Pembacaan nama properti 'status' dan 'teks' dari doGet Apps Script
                 rsvpCommentsData = list.map(item => ({
-                    nama: item.nama || item.Nama || item[1] || 'Anonim',
-                    kehadiran: item.kehadiran || item.Kehadiran || item[2] || 'Hadir',
-                    ucapan: item.ucapan || item.Pesan || item.pesan || item.Ucapan || item[3] || ''
-                })).reverse();
+                    nama: item.nama || item.Nama || 'Anonim',
+                    kehadiran: item.status || item.kehadiran || item.Kehadiran || 'Belum Ditentukan',
+                    ucapan: item.teks || item.ucapan || item.pesan || item.Pesan || ''
+                }));
 
                 counter.innerText = rsvpCommentsData.length;
                 currentPage = 1;
@@ -1409,7 +1410,7 @@ function renderPaginatedComments() {
                 <span class="comment-name">${item.nama}</span>
                 <span class="comment-badge ${badgeClass}">${item.kehadiran}</span>
             </div>
-            <div class="comment-text">${item.ucapan}</div>
+            <div class="comment-text">${item.ucapan || '-'}</div>
         `;
         list.appendChild(div);
     });
@@ -1424,7 +1425,7 @@ function changePage(direction) {
     renderPaginatedComments();
 }
 
-// SUBMIT RSVP
+// SUBMIT RSVP (MENGIRIM PARAMETER YANG DITERIMA DOPOST APPS SCRIPT)
 function submitRSVP() {
     const nama = document.getElementById('rsvp-nama').value;
     const status = document.getElementById('rsvp-status').value;
@@ -1441,9 +1442,8 @@ function submitRSVP() {
 
     const formData = new URLSearchParams();
     formData.append('nama', nama);
-    formData.append('kehadiran', status);
-    formData.append('ucapan', pesan);
-    formData.append('pesan', pesan);
+    formData.append('status', status);
+    formData.append('teks', pesan);
 
     if (SPREADSHEET_SCRIPT_URL && !SPREADSHEET_SCRIPT_URL.includes("GANTI_DENGAN_URL")) {
         fetch(SPREADSHEET_SCRIPT_URL, {
