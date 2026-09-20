@@ -492,7 +492,8 @@ body, html {
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    z-index: 10;
+    z-index: 20; /* Ditingkatkan z-index agar bisa diklik secara presisi */
+    pointer-events: auto;
 }
 
 #countdown-box {
@@ -526,6 +527,9 @@ body, html {
 #btn-google-calendar {
     width: var(--cal-btn-width);
     cursor: pointer;
+    position: relative;
+    z-index: 25;
+    pointer-events: auto;
 }
 
 /* MAPS FIX DI 15% DARI BAWAH GAMBAR */
@@ -536,7 +540,8 @@ body, html {
     width: var(--maps-btn-width);
     transform: translateX(-50%);
     cursor: pointer;
-    z-index: 10;
+    z-index: 20;
+    pointer-events: auto;
 }
 
 .time-sub-btn img {
@@ -548,6 +553,10 @@ body, html {
 
 .time-sub-btn:active {
     transform: translateX(-50%) scale(0.92);
+}
+
+#btn-google-calendar:active {
+    transform: scale(0.92);
 }
 
 .modal-body-custom-bg {
@@ -1204,17 +1213,51 @@ function playMusic() {
     }).catch(e => console.log("Autoplay blocked:", e));
 }
 
+function pauseMusic() {
+    audio.pause();
+    musicBtn.classList.remove('playing');
+    musicBtn.classList.add('muted');
+}
+
 function toggleMusic() {
     if (audio.paused) {
-        audio.play();
-        musicBtn.classList.add('playing');
-        musicBtn.classList.remove('muted');
+        playMusic();
     } else {
-        audio.pause();
-        musicBtn.classList.remove('playing');
-        musicBtn.classList.add('muted');
+        pauseMusic();
     }
 }
+
+// STOP LAGU & RESET KELUAR DARI UNDANGAN SAAT KLIK HOME / MINIMIZE BROWSER
+function exitAndStopMusic() {
+    pauseMusic();
+
+    // Reset Halaman Kembali Ke Cover Awal
+    const mainCover = document.getElementById('main-cover');
+    if (mainCover) {
+        mainCover.classList.remove('opened');
+        mainCover.style.display = 'flex';
+    }
+
+    // Tutup semua modal / popup yang aktif
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+        modal.classList.remove('active');
+    });
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        lightbox.style.display = 'none';
+    }
+    activeModalId = null;
+}
+
+// DETEKSI KELUAR BROWSER / NAVIGASI TENGAH HP
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        exitAndStopMusic();
+    }
+});
+
+window.addEventListener('pagehide', exitAndStopMusic);
+window.addEventListener('blur', exitAndStopMusic);
 
 // COUNTDOWN TIMER
 const countdownTimer = setInterval(function() {
