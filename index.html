@@ -107,7 +107,7 @@
     --bank-card-font-size: 1rem;
     --gift-card-width: 85%;
     --gift-card-padding: 14px;
-    --gift-card-gap: 15px;
+    --gift-card-gap: 13px;
 
     /* --- CUSTOM TULISAN KELAP KELIP (INSTRUCTION HINT) --- */
     --hint-bottom: 6%;
@@ -1162,14 +1162,15 @@ textarea.form-control {
 <script>
 const SPREADSHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwnCVLeiQrxw19oDnEsq09P1eh6WXxLJ5hTZeT5ECFS9VO9b8t3T4S97Ewj5oh9NQkl/exec";
 
-// CONFIG TANGGAL ACARA (Sesuaikan Tanggal Countdown di sini)
-const EVENT_DATE = new Date("2026-12-06T09:00:00").getTime();
+// CONFIG TANGGAL ACARA (Ganti tanggal acara di sini, countdown & kalender otomatis tersinkronisasi)
+const EVENT_DATE_STRING = "2026-12-06T09:00:00"; 
+const EVENT_DURATION_HOURS = 4; // Durasi acara (jam)
+
+const EVENT_DATE = new Date(EVENT_DATE_STRING).getTime();
 const GOOGLE_MAPS_URL = "https://maps.google.com/?q=-6.175392,106.827153";
 const CALENDAR_TITLE = "Pernikahan Hazela & Kayden";
 const CALENDAR_DETAILS = "Acara Pernikahan Hazela & Kayden";
 const CALENDAR_LOCATION = "Jakarta, Indonesia";
-const CALENDAR_START_DATE = "20261206T090000Z";
-const CALENDAR_END_DATE = "20261206T130000Z";
 
 // CONFIG PAGINATION RSVP
 let rsvpCommentsData = [];
@@ -1237,8 +1238,20 @@ const countdownTimer = setInterval(function() {
     document.getElementById("cd-seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
 }, 1000);
 
+// FUNGSI KONVERSI TANGGAL KE FORMAT UTC GOOGLE CALENDAR (YYYYMMDDTHHMMSSZ)
+function formatDateToUTC(date) {
+    return date.toISOString().replace(/-|:|\.\d\d\d/g, "");
+}
+
+// BUKA GOOGLE CALENDAR DENGAN TANGGAL OTOMATIS BERDASARKAN EVENT_DATE
 function openGoogleCalendar() {
-    const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(CALENDAR_TITLE)}&dates=${CALENDAR_START_DATE}/${CALENDAR_END_DATE}&details=${encodeURIComponent(CALENDAR_DETAILS)}&location=${encodeURIComponent(CALENDAR_LOCATION)}`;
+    const startDate = new Date(EVENT_DATE_STRING);
+    const endDate = new Date(startDate.getTime() + (EVENT_DURATION_HOURS * 60 * 60 * 1000));
+
+    const calStart = formatDateToUTC(startDate);
+    const calEnd = formatDateToUTC(endDate);
+
+    const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(CALENDAR_TITLE)}&dates=${calStart}/${calEnd}&details=${encodeURIComponent(CALENDAR_DETAILS)}&location=${encodeURIComponent(CALENDAR_LOCATION)}`;
     window.open(gCalUrl, '_blank');
 }
 
