@@ -8,7 +8,11 @@
 <meta property="og:title" content="Undangan Pernikahan Digital">
 <meta property="og:description" content="Kami mengundang Anda untuk hadir di acara pernikahan kami.">
 <meta property="og:image" content="f1.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="600">
+<meta property="og:image:height" content="600">
 <meta property="og:type" content="website">
+<link rel="image_src" href="f1.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* --- CONFIG CUSTOM ELEMEN (POSISI %, UKURAN %, DLSB) --- */
@@ -61,7 +65,7 @@
     --gallery-top-spacing: 30%;
 
     /* --- CONFIG ELEMEN DI DALAM MODAL WAKTU & TEMPAT --- */
-    --countdown-top: 30%;
+    --countdown-top: 20%;
     --countdown-left: 50%;
     --countdown-width: 85%;
     --countdown-size: 1.5rem;
@@ -70,8 +74,8 @@
     /* Pengaturan Posisi Tombol Google Calendar */
     --cal-btn-width: 55%;
 
-    /* Pengaturan Posisi & Ukuran Tombol Google Maps (20% dari bawah) */
-    --maps-btn-bottom: 20%;
+    /* Pengaturan Posisi & Ukuran Tombol Google Maps (15% dari bawah) */
+    --maps-btn-bottom: 7%;
     --maps-btn-left: 50%;
     --maps-btn-width: 50%;
 
@@ -91,7 +95,7 @@
     --gift-card-gap: 15px;
 
     /* --- CUSTOM TULISAN KELAP KELIP (INSTRUCTION HINT) --- */
-    --hint-bottom: 3%;
+    --hint-bottom: 6%;
     --hint-color: #333333;
 }
 
@@ -444,6 +448,7 @@ body, html {
     transform: translateY(0);
 }
 
+/* KONTENER SCROLL UNTUK MODAL PNG (ISINAMA, ISISTORY, ISIWAKTU) */
 .modal-body-png {
     position: relative;
     width: 90%;
@@ -458,24 +463,6 @@ body, html {
 .modal-png-content {
     width: 100%;
     height: auto;
-    display: block;
-}
-
-/* MODAL WAKTU & TEMPAT */
-.modal-waktu-container {
-    position: relative;
-    width: 90%;
-    aspect-ratio: 9 / 16;
-    max-height: 85vh;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    overflow: hidden;
-}
-
-.waktu-bg-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     display: block;
 }
 
@@ -526,7 +513,7 @@ body, html {
     cursor: pointer;
 }
 
-/* MAPS FIX DI 20% DARI BAWAH */
+/* MAPS FIX DI 15% DARI BAWAH GAMBAR */
 #btn-google-maps {
     position: absolute;
     bottom: var(--maps-btn-bottom);
@@ -713,7 +700,7 @@ body, html {
 }
 
 .rsvp-form-container {
-    width: 100%;
+    width: 90%;
     max-width: 100%;
     background: #be8dac;
     backdrop-filter: blur(4px);
@@ -793,7 +780,7 @@ textarea.form-control {
 }
 
 .comments-section {
-    width: 100%;
+    width: 90%;
     max-width: 100%;
     margin-top: 12px;
     margin-bottom: 15px;
@@ -1038,28 +1025,31 @@ textarea.form-control {
 
     <!-- Modal 3: Waktu & Tempat -->
     <div class="modal-overlay" id="modal-waktu">
-        <div class="modal-waktu-container">
+        <div class="modal-body-png">
             <span class="btn-close-modal" onclick="closeModal('modal-waktu')">&times;</span>
-            <img src="isiwaktu.png" alt="Waktu & Tempat" class="waktu-bg-img">
             
-            <!-- Group Countdown Timer & Google Calendar -->
-            <div class="waktu-top-group">
-                <div id="countdown-box">
-                    <div class="time-unit"><div id="cd-days">00</div><span>Hari</span></div>
-                    <div class="time-unit"><div id="cd-hours">00</div><span>Jam</span></div>
-                    <div class="time-unit"><div id="cd-minutes">00</div><span>Menit</span></div>
-                    <div class="time-unit"><div id="cd-seconds">00</div><span>Detik</span></div>
+            <div style="position: relative; width: 100%;">
+                <img src="isiwaktu.png" alt="Waktu & Tempat" class="modal-png-content">
+                
+                <!-- Group Countdown Timer & Google Calendar -->
+                <div class="waktu-top-group">
+                    <div id="countdown-box">
+                        <div class="time-unit"><div id="cd-days">00</div><span>Hari</span></div>
+                        <div class="time-unit"><div id="cd-hours">00</div><span>Jam</span></div>
+                        <div class="time-unit"><div id="cd-minutes">00</div><span>Menit</span></div>
+                        <div class="time-unit"><div id="cd-seconds">00</div><span>Detik</span></div>
+                    </div>
+
+                    <!-- Tombol Google Calendar -->
+                    <div id="btn-google-calendar" class="time-sub-btn" onclick="openGoogleCalendar()">
+                        <img src="kalender.png" alt="Google Calendar">
+                    </div>
                 </div>
 
-                <!-- Tombol Google Calendar -->
-                <div id="btn-google-calendar" class="time-sub-btn" onclick="openGoogleCalendar()">
-                    <img src="kalender.png" alt="Google Calendar">
+                <!-- Tombol Google Maps -->
+                <div id="btn-google-maps" class="time-sub-btn" onclick="openGoogleMaps()">
+                    <img src="maps.png" alt="Google Maps">
                 </div>
-            </div>
-
-            <!-- Tombol Google Maps (Di bawah 20% dari bawah) -->
-            <div id="btn-google-maps" class="time-sub-btn" onclick="openGoogleMaps()">
-                <img src="maps.png" alt="Google Maps">
             </div>
         </div>
     </div>
@@ -1157,14 +1147,14 @@ textarea.form-control {
 <script>
 const SPREADSHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwnCVLeiQrxw19oDnEsq09P1eh6WXxLJ5hTZeT5ECFS9VO9b8t3T4S97Ewj5oh9NQkl/exec";
 
-// CONFIG TANGGAL ACARA (Silakan ubah tanggal countdown di sini)
-const EVENT_DATE = new Date("2026-12-31T09:00:00").getTime();
+// CONFIG TANGGAL ACARA (Sesuaikan Tanggal Countdown di sini)
+const EVENT_DATE = new Date("2026-12-06T09:00:00").getTime();
 const GOOGLE_MAPS_URL = "https://maps.google.com/?q=-6.175392,106.827153";
 const CALENDAR_TITLE = "Pernikahan Hazela & Kayden";
 const CALENDAR_DETAILS = "Acara Pernikahan Hazela & Kayden";
 const CALENDAR_LOCATION = "Jakarta, Indonesia";
-const CALENDAR_START_DATE = "20261231T090000Z";
-const CALENDAR_END_DATE = "20261231T130000Z";
+const CALENDAR_START_DATE = "20261206T090000Z";
+const CALENDAR_END_DATE = "20261206T130000Z";
 
 // CONFIG PAGINATION RSVP
 let rsvpCommentsData = [];
