@@ -1354,8 +1354,15 @@ function loadRSVPData() {
         .then(res => res.json())
         .then(data => {
             const counter = document.getElementById('count-ucapan');
-            if(data && data.length) {
-                rsvpCommentsData = data.reverse();
+            let list = Array.isArray(data) ? data : (data.data || []);
+            
+            if(list && list.length) {
+                rsvpCommentsData = list.map(item => ({
+                    nama: item.nama || item.Nama || item[1] || 'Anonim',
+                    kehadiran: item.kehadiran || item.Kehadiran || item[2] || 'Hadir',
+                    ucapan: item.ucapan || item.Pesan || item.pesan || item.Ucapan || item[3] || ''
+                })).reverse();
+
                 counter.innerText = rsvpCommentsData.length;
                 currentPage = 1;
                 renderPaginatedComments();
@@ -1432,14 +1439,18 @@ function submitRSVP() {
     btnSubmit.disabled = true;
     btnSubmit.innerText = "Mengirim...";
 
-    const payload = { nama: nama, kehadiran: status, ucapan: pesan };
+    const formData = new URLSearchParams();
+    formData.append('nama', nama);
+    formData.append('kehadiran', status);
+    formData.append('ucapan', pesan);
+    formData.append('pesan', pesan);
 
     if (SPREADSHEET_SCRIPT_URL && !SPREADSHEET_SCRIPT_URL.includes("GANTI_DENGAN_URL")) {
         fetch(SPREADSHEET_SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData.toString()
         })
         .then(() => {
             appendLocalComment(nama, status, pesan);
